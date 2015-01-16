@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Buildroot 2015.02-git-00808-geacb002-dirty Configuration
+# Buildroot 2015.02-git-00864-g6f8de79-dirty Configuration
 #
 BR2_HAVE_DOT_CONFIG=y
 
@@ -289,7 +289,7 @@ BR2_LINUX_KERNEL_VERSION="9301f9aff699bc90c194e41c3fa6117a36c4954a"
 BR2_LINUX_KERNEL_PATCH=""
 # BR2_LINUX_KERNEL_USE_DEFCONFIG is not set
 BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG=y
-BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="board/raspberrypi/linux-3.12-rpi-dt.defconfig"
+BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="board/raspberrypi/stak/stak-linux-defconfig"
 # BR2_LINUX_KERNEL_UIMAGE is not set
 # BR2_LINUX_KERNEL_APPENDED_UIMAGE is not set
 BR2_LINUX_KERNEL_ZIMAGE=y
@@ -323,6 +323,7 @@ BR2_PACKAGE_BUSYBOX_CONFIG="package/busybox/busybox.config"
 #
 # bellagio needs a toolchain w/ C++, threads, dynamic library
 #
+# BR2_PACKAGE_DVDAUTHOR is not set
 
 #
 # espeak needs a toolchain w/ C++, wchar, threads
@@ -696,6 +697,7 @@ BR2_PACKAGE_RPI_FIRMWARE_INSTALL_DTBS=y
 # BR2_PACKAGE_PICOCOM is not set
 # BR2_PACKAGE_PIFMRDS is not set
 # BR2_PACKAGE_PPS_TOOLS is not set
+# BR2_PACKAGE_READ_EDID is not set
 # BR2_PACKAGE_RNG_TOOLS is not set
 
 #
@@ -742,6 +744,7 @@ BR2_PACKAGE_RPI_FIRMWARE_INSTALL_DTBS=y
 #
 # BR2_PACKAGE_W_SCAN is not set
 # BR2_PACKAGE_WIPE is not set
+# BR2_PACKAGE_XORRISO is not set
 
 #
 # Interpreter languages and scripting
@@ -1395,6 +1398,7 @@ BR2_PACKAGE_LIBNSPR_ARCH_SUPPORT=y
 #
 # icu needs a toolchain w/ C++, wchar, threads
 #
+# BR2_PACKAGE_LIBCLI is not set
 # BR2_PACKAGE_LIBEDIT is not set
 # BR2_PACKAGE_LIBENCA is not set
 # BR2_PACKAGE_LIBESTR is not set
