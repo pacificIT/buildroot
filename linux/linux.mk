@@ -147,15 +147,15 @@ endif # BR2_LINUX_KERNEL_VMLINUX
 define LINUX_DOWNLOAD_PATCHES
 	$(if $(LINUX_PATCHES),
 		@$(call MESSAGE,"Download additional patches"))
-	$(foreach patch,$(filter ftp://% http://%,$(LINUX_PATCHES)),\
-		$(call DOWNLOAD,$(patch))$(sep))
+	$(foreach patch,$(filter ftp://% http://% https://%,$(LINUX_PATCHES)),\
+		$(call DOWNLOAD_WGET,$(patch),$(notdir $(patch)))$(sep))
 endef
 
 LINUX_POST_DOWNLOAD_HOOKS += LINUX_DOWNLOAD_PATCHES
 
 define LINUX_APPLY_PATCHES
 	for p in $(LINUX_PATCHES) ; do \
-		if echo $$p | grep -q -E "^ftp://|^http://" ; then \
+		if echo $$p | grep -q -E "^ftp://|^http://|^https://" ; then \
 			$(APPLY_PATCHES) $(@D) $(DL_DIR) `basename $$p` ; \
 		elif test -d $$p ; then \
 			$(APPLY_PATCHES) $(@D) $$p linux-\*.patch ; \

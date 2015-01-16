@@ -5,7 +5,7 @@
 ################################################################################
 
 SQUID_VERSION_MAJOR = 3.4
-SQUID_VERSION = $(SQUID_VERSION_MAJOR).10
+SQUID_VERSION = $(SQUID_VERSION_MAJOR).11
 SQUID_SOURCE = squid-$(SQUID_VERSION).tar.xz
 SQUID_SITE = http://www.squid-cache.org/Versions/v3/$(SQUID_VERSION_MAJOR)
 SQUID_LICENSE = GPLv2+
@@ -39,7 +39,8 @@ SQUID_CONF_OPTS = \
 	--with-logdir=/var/log/squid/ \
 	--with-pidfile=/var/run/squid.pid \
 	--with-swapdir=/var/cache/squid/ \
-	--enable-icap-client
+	--enable-icap-client \
+	--with-default-user=squid
 
 # On uClibc librt needs libpthread
 ifeq ($(BR2_TOOLCHAIN_HAS_THREADS)$(BR2_TOOLCHAIN_USES_UCLIBC),yy)
@@ -59,5 +60,14 @@ define SQUID_CLEANUP_TARGET
 endef
 
 SQUID_POST_INSTALL_TARGET_HOOKS += SQUID_CLEANUP_TARGET
+
+define SQUID_USERS
+	squid -1 squid -1 * - - - Squid proxy cache
+endef
+
+define SQUID_INSTALL_INIT_SYSV
+	$(INSTALL) -m 755 -D package/squid/S97squid \
+		$(TARGET_DIR)/etc/init.d/S97squid
+endef
 
 $(eval $(autotools-package))
