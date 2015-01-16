@@ -5,7 +5,9 @@ menu "Stak"
 	menu "Libraries"
 		source package/stak/platform/raspberrypi/libbcm2835/Config.in
 		source package/stak/platform/raspberrypi/armmem/Config.in
+		source package/stak/platform/raspberrypi/gifsicle/Config.in
 		source package/stak/platform/raspberrypi/hostapdrtl/Config.in
+		source package/stak/platform/raspberrypi/rpi-userland/Config.in
 		source package/stak/platform/rtl81xx/Config.in
 	endmenu
 endmenu

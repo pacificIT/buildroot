@@ -20,7 +20,7 @@ mkdir -p ${ROOT_DIR}
 sudo ${TAR} xvpsf output/images/rootfs.tar -C ${ROOT_DIR} > /dev/null 2>&1
 
 sudo ${CP} output/build/rpi-firmware-*/boot/* ${BOOT_DIR}/ > /dev/null 2>&1
-sudo ${CP} output/build/rpi-firmware-*/boot/start_x.elf ${BOOT_DIR}/start.elf > /dev/null 2>&1
+# sudo ${CP} output/build/rpi-firmware-*/boot/start_x.elf ${BOOT_DIR}/start.elf > /dev/null 2>&1
 sudo ${CP} output/images/rpi-firmware/* ${BOOT_DIR}/ > /dev/null 2>&1
 sudo ${CP} ${STAK_SUPPORT}/cmdline.txt ${BOOT_DIR}/cmdline.txt > /dev/null 2>&1
 sudo ${CP} ${STAK_SUPPORT}/config.txt ${BOOT_DIR}/config.txt > /dev/null 2>&1
@@ -28,8 +28,9 @@ sudo ${CP} output/images/zImage ${BOOT_DIR}/kernel.img > /dev/null 2>&1
 
 # sudo ${CP} output/images/boot/* sdimage/boot/ > /dev/null 2>&1
 sudo install -m 775 ${STAK_SUPPORT}/dt-blob.bin		${BOOT_DIR}/
+sudo install -m 775 ${STAK_SUPPORT}/S03loadmodules	${ROOT_DIR}/etc/init.d
+sudo install -m 775 ${STAK_SUPPORT}/S06launch-otto	${ROOT_DIR}/etc/init.d
 #sudo install -m 775 ${STAK_SUPPORT}/stak/S02setupmdev		${ROOT_DIR}/etc/init.d
-#sudo install -m 775 ${STAK_SUPPORT}/stak/S03loadmodules		${ROOT_DIR}/etc/init.d
 #sudo install -m 775 ${STAK_SUPPORT}/stak/S07dhcp			${ROOT_DIR}/etc/init.d
 #sudo install -m 775 ${STAK_SUPPORT}/stak/00-vmcs.conf		${ROOT_DIR}/etc/ld.so.conf.d/
 

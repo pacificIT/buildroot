@@ -6,6 +6,10 @@ ifeq ($(BR2_PACKAGE_ARMMEM),y)
 	include package/stak/platform/raspberrypi/armmem/armmem.mk
 endif
 
+ifeq ($(BR2_PACKAGE_GIFSICLE),y)
+	include package/stak/platform/raspberrypi/gifsicle/gifsicle.mk
+endif
+
 ifeq ($(BR2_PACKAGE_HOSTAPDRTL),y)
 	include package/stak/platform/raspberrypi/hostapdrtl/hostapdrtl.mk
 endif
@@ -16,6 +20,10 @@ endif
 
 ifeq ($(BR2_PACKAGE_BGFX),y)
 	include package/stak/platform/raspberrypi/bgfx/bgfx.mk
+endif
+
+ifeq ($(BR2_PACKAGE_RPI_USERLAND),y)
+	include package/stak/platform/raspberrypi/rpi-userland/rpi-userland.mk
 endif
 
 ifeq ($(BR2_PACKAGE_OTTOSDK),y)
