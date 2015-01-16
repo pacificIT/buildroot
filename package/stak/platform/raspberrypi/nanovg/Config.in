@@ -1,0 +1,6 @@
+config BR2_PACKAGE_NANOVG
+	bool "nanovg"
+	depends on BR2_arm
+	help
+	  NanoVG is small antialiased vector graphics rendering library for OpenGL. It has lean API modeled after HTML5 canvas API. It is aimed to be a practical and fun toolset for building scalable user interfaces and visualizations.
+
