@@ -2,14 +2,14 @@
 #
 # Start logging
 #
-
+PIDFILE=/var/lock/otto
 case "$1" in
   start)
+	start-stop-daemon --start --quiet --pidfile $PIDFILE --exec main
 	# exec main
 	;;
   stop)
-	# start-stop-daemon -K -q -p /var/run/syslogd.pid
-	# start-stop-daemon -K -q -p /var/run/klogd.pid
+	start-stop-daemon --stop --quiet --pidfile $PIDFILE
 	;;
   restart|reload)
 	;;

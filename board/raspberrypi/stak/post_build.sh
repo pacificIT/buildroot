@@ -19,20 +19,17 @@ mkdir -p ${ROOT_DIR}
 
 sudo ${TAR} xvpsf output/images/rootfs.tar -C ${ROOT_DIR} > /dev/null 2>&1
 
-sudo ${CP} output/build/rpi-firmware-*/boot/* ${BOOT_DIR}/ > /dev/null 2>&1
-# sudo ${CP} output/build/rpi-firmware-*/boot/start_x.elf ${BOOT_DIR}/start.elf > /dev/null 2>&1
-sudo ${CP} output/images/rpi-firmware/* ${BOOT_DIR}/ > /dev/null 2>&1
+sudo ${CP} output/build/rpi-firmware-*/boot/bootcode.bin ${BOOT_DIR}/ > /dev/null 2>&1
+sudo ${CP} output/build/rpi-firmware-*/boot/start.elf ${BOOT_DIR}/ > /dev/null 2>&1
+sudo ${CP} output/build/rpi-firmware-*/boot/start_x.elf ${BOOT_DIR}/ > /dev/null 2>&1
+sudo ${CP} output/build/rpi-firmware-*/boot/fixup.dat ${BOOT_DIR}/ > /dev/null 2>&1
+#sudo ${CP} output/images/rpi-firmware/* ${BOOT_DIR}/ > /dev/null 2>&1
 sudo ${CP} ${STAK_SUPPORT}/cmdline.txt ${BOOT_DIR}/cmdline.txt > /dev/null 2>&1
 sudo ${CP} ${STAK_SUPPORT}/config.txt ${BOOT_DIR}/config.txt > /dev/null 2>&1
 sudo ${CP} output/images/zImage ${BOOT_DIR}/kernel.img > /dev/null 2>&1
 
-# sudo ${CP} output/images/boot/* sdimage/boot/ > /dev/null 2>&1
 sudo install -m 775 ${STAK_SUPPORT}/dt-blob.bin		${BOOT_DIR}/
-sudo install -m 775 ${STAK_SUPPORT}/S03loadmodules	${ROOT_DIR}/etc/init.d
-sudo install -m 775 ${STAK_SUPPORT}/S06launch-otto	${ROOT_DIR}/etc/init.d
-#sudo install -m 775 ${STAK_SUPPORT}/stak/S02setupmdev		${ROOT_DIR}/etc/init.d
-#sudo install -m 775 ${STAK_SUPPORT}/stak/S07dhcp			${ROOT_DIR}/etc/init.d
-#sudo install -m 775 ${STAK_SUPPORT}/stak/00-vmcs.conf		${ROOT_DIR}/etc/ld.so.conf.d/
+sudo install -m 775 ${STAK_SUPPORT}/root/etc/init.d/*	${ROOT_DIR}/etc/init.d
 
 ROOTSIZE_MB="$(( ( `sudo du -h -s -S --total ${ROOT_DIR}/ | tail -1 | cut -f 1 | sed s'/.$//'`) + 10))"
 
@@ -73,11 +70,6 @@ ${FDISK} ${IMAGE} > /dev/null 2>&1 <<-END
 	1
 	w
 END
-#	
-#	+64M
-#	n
-#	p
-#	3
 
 KPARTX_OUTPUT=`sudo ${KPARTX} -al ${IMAGE}`
 BOOTLOOP=/dev/mapper/`echo "$KPARTX_OUTPUT" | awk 'NR==1 {print $1}'`
@@ -120,8 +112,12 @@ df -h
 sudo ${UMOUNT} sdimage/boot
 sudo ${UMOUNT} sdimage/root
 
+
 sudo ${KPARTX} -d ${IMAGE} > /dev/null 2>&1
 sudo rm -Rf sdimage/
+
+sudo rm -rf ${BOOT_DIR}
+sudo rm -rf ${ROOT_DIR}
 # bzip2 ${IMAGE}
 
 echo "Uploading to S3"
