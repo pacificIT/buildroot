@@ -4,4 +4,3 @@ gpu_mem_512=256
 start_x=1
 boot_delay=0
 disable_splash=1
-disable_commandline_tags=1
