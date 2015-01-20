@@ -33,12 +33,16 @@ define OTTOSDK_INSTALL_TARGET_CMDS
 	$(INSTALL) -d -m 0755 $(TARGET_DIR)/home/pi/otto-sdk/assets
 	$(INSTALL) -d -m 0755 $(TARGET_DIR)/home/pi/otto-sdk/fastcmd
 	$(INSTALL) -d -m 0755 $(TARGET_DIR)/home/pi/otto-sdk/create_ap
+	$(INSTALL) -d -m 0755 $(TARGET_DIR)/home/pi/otto-sdk/python
+	$(INSTALL) -d -m 0755 $(TARGET_DIR)/home/pi/otto-sdk/python/views
 
 	$(INSTALL) -D -m 0755 $(@D)/main $(TARGET_DIR)/usr/bin
 
 	$(INSTALL) -D -m 0755 $(@D)/fastcmd/* $(TARGET_DIR)/home/pi/fastcmd
 	$(INSTALL) -D -m 0755 $(@D)/fastcmd/* $(TARGET_DIR)/home/pi/otto-sdk/fastcmd
 	$(INSTALL) -D -m 0755 $(@D)/vendor/tools/create_ap/* $(TARGET_DIR)/home/pi/otto-sdk/create_ap
+	$(INSTALL) -D -m 0755 $(@D)/python/server.py $(TARGET_DIR)/home/pi/otto-sdk/python
+	$(INSTALL) -D -m 0755 $(@D)/python/views/* $(TARGET_DIR)/home/pi/otto-sdk/python/views
 
     $(INSTALL) -D -m 0755 $(@D)/assets/* $(TARGET_DIR)/home/pi/otto-sdk/assets
 endef
