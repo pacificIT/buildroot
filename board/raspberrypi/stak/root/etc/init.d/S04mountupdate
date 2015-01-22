@@ -1,0 +1,4 @@
+mkdir -p /updates
+mount /dev/mmcblk0p4 -t vfat /updates
+
+otto-update /updates/ rootfs.ext2

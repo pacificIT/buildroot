@@ -18,6 +18,14 @@ ifeq ($(BR2_PACKAGE_BX),y)
 	include package/stak/platform/raspberrypi/bx/bx.mk
 endif
 
+ifeq ($(BR2_PACKAGE_OTTOUPDATE),y)
+	include package/stak/platform/raspberrypi/ottoupdate/ottoupdate.mk
+endif
+
+ifeq ($(BR2_PACKAGE_DCFLDD),y)
+	include package/stak/platform/raspberrypi/dcfldd/dcfldd.mk
+endif
+
 ifeq ($(BR2_PACKAGE_BGFX),y)
 	include package/stak/platform/raspberrypi/bgfx/bgfx.mk
 endif
