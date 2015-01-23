@@ -36,7 +36,7 @@ ROOTSIZE_MB="$(( ( `sudo du -h -s -S --total ${ROOT_DIR}/ | tail -1 | cut -f 1 |
 
 BOOTSIZE=`sudo du -h -s -S --total ${BOOT_DIR}/ | tail -1 | cut -f 1 | sed s'/.$//' | awk '{printf("%d\n",$1 + 0.5)}'`
 BOOTSIZE_MB="$(( $BOOTSIZE + 4 ))"
-TOTAL_SIZE="$(( $ROOTSIZE_MB * 3 + $BOOTSIZE_MB + 2 + 10))"
+TOTAL_SIZE="$(( $ROOTSIZE_MB * 2 + $BOOTSIZE_MB * 2 + 14))"
 
 echo "Boot Size: $BOOTSIZE_MB"
 echo "Root Size: $ROOTSIZE_MB"
