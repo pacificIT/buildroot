@@ -64,7 +64,7 @@ ${FDISK} ${IMAGE} > /dev/null 2>&1 <<-END
 	p
 	2
 	
-	+${ROOTSIZE_MB}M
+	+${BOOTSIZE_MB}M
 	
 	n
 	p
@@ -82,7 +82,7 @@ ${FDISK} ${IMAGE} > /dev/null 2>&1 <<-END
 	1
 	e
 	t
-	4
+	2
 	e
 	a
 	1
@@ -92,38 +92,46 @@ END
 
 KPARTX_OUTPUT=`sudo ${KPARTX} -al ${IMAGE}`
 BOOTLOOP=/dev/mapper/`echo "$KPARTX_OUTPUT" | awk 'NR==1 {print $1}'`
-ROOTLOOP=/dev/mapper/`echo "$KPARTX_OUTPUT" | awk 'NR==2 {print $1}'`
-FATLOOP=/dev/mapper/`echo "$KPARTX_OUTPUT" | awk 'NR==4 {print $1}'`
+RECOVERYLOOP=/dev/mapper/`echo "$KPARTX_OUTPUT" | awk 'NR==2 {print $1}'`
+ROOTLOOP=/dev/mapper/`echo "$KPARTX_OUTPUT" | awk 'NR==3 {print $1}'`
+DATALOOP=/dev/mapper/`echo "$KPARTX_OUTPUT" | awk 'NR==4 {print $1}'`
+
 sudo ${KPARTX} -a ${IMAGE}
 
-echo "Bootloop: ${BOOTLOOP}"
-echo "Rootloop: ${ROOTLOOP}"
-echo "FATloop: ${FATLOOP}"
+echo "Boot loop: ${BOOTLOOP}"
+echo "Recovery loop: ${RECOVERYLOOP}"
+echo "Root loop: ${ROOTLOOP}"
+echo "Update loop: ${DATALOOP}"
 if [ -d 'sdimage' ]; then
 	sudo rm -Rf sdimage
 fi
 mkdir sdimage
 mkdir -p sdimage/root
 mkdir -p sdimage/boot
-mkdir -p sdimage/updates
+mkdir -p sdimage/recovery
+mkdir -p sdimage/data
 
 sudo ${MKFS_VFAT} -F16 -n BOOT -S 512 ${BOOTLOOP} > /dev/null 2>&1
+sudo ${MKFS_VFAT} -F16 -n RECOVERY -S 512 ${RECOVERYLOOP} > /dev/null 2>&1
 sudo ${MKFS_EXT4} -T small ${ROOTLOOP} > /dev/null 2>&1
-sudo ${MKFS_VFAT} -n UPDATE -S 512 ${FATLOOP} > /dev/null 2>&1
+sudo ${MKFS_VFAT} -n DATA -S 512 ${DATALOOP} > /dev/null 2>&1
 
 sudo ${MOUNT} -t vfat -w ${BOOTLOOP} sdimage/boot
+sudo ${MOUNT} -t vfat -w ${RECOVERYLOOP} sdimage/recovery
 sudo ${MOUNT} -t ext4 -w ${ROOTLOOP} sdimage/root
-sudo ${MOUNT} -t vfat -w ${FATLOOP} sdimage/updates
+sudo ${MOUNT} -t vfat -w ${DATALOOP} sdimage/data
 
-# modify root file system here
 sudo ${CP} -rf ${BOOT_DIR}/* sdimage/boot
+sudo ${CP} -rf ${BOOT_DIR}/* sdimage/recovery
 sudo ${CP} -rf ${ROOT_DIR}/* sdimage/root
+
+
 CHECKSUM=`sha256sum output/images/rootfs.ext2 | awk 'NR==1 {print $1}'`
-sudo ${CP} output/images/rootfs.ext2 sdimage/updates/
-echo "$CHECKSUM *sdimage/updates/rootfs.ext2" | sha256sum -c -
+sudo mkdir -p sdimage/data/update/
+sudo ${CP} output/images/rootfs.ext2 sdimage/data/update/
+echo "$CHECKSUM *sdimage/data/update/rootfs.ext2" | sha256sum -c -
 
 
-# echo "/dev/mmcblk0p3		/modes	       ext4    defaults	  0	 0" | sudo tee --append sdimage/root/etc/fstab > /dev/null
 
 if [ -f sdimage/root/sbin/init ];
 then
@@ -135,7 +143,8 @@ fi
 sync && sync > /dev/null 2>&1
 
 df -h
-sudo ${UMOUNT} sdimage/updates
+sudo ${UMOUNT} sdimage/data
+sudo ${UMOUNT} sdimage/recovery
 sudo ${UMOUNT} sdimage/boot
 sudo ${UMOUNT} sdimage/root
 
