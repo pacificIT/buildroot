@@ -118,7 +118,10 @@ sudo ${MOUNT} -t vfat -w ${FATLOOP} sdimage/updates
 # modify root file system here
 sudo ${CP} -rf ${BOOT_DIR}/* sdimage/boot
 sudo ${CP} -rf ${ROOT_DIR}/* sdimage/root
+CHECKSUM=`sha256sum output/images/rootfs.ext2 | awk 'NR==1 {print $1}'`
 sudo ${CP} output/images/rootfs.ext2 sdimage/updates/
+echo "$CHECKSUM *sdimage/updates/rootfs.ext2" | sha256sum -c -
+
 
 # echo "/dev/mmcblk0p3		/modes	       ext4    defaults	  0	 0" | sudo tee --append sdimage/root/etc/fstab > /dev/null
 
