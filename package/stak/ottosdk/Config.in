@@ -1,6 +1,9 @@
 config BR2_PACKAGE_OTTOSDK
 	bool "ottosdk"
 	depends on BR2_arm
-	select BR2_PACKAGE_NANOVG
+	select BR2_PACKAGE_JPEG
+	select BR2_PACKAGE_LIBBCM2835
+	select BR2_PACKAGE_RPI_USERLAND
+	select BR2_PACKAGE_GIFSICLE
 	help
 	  Hardware Test For Stak

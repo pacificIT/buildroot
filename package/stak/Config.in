@@ -1,5 +1,16 @@
 menu "Stak"
 	depends on BR2_arm
+
+	config BR2_PACKAGE_META_OTTO
+	bool "otto-full-stack"
+	depends on BR2_arm
+	select BR2_PACKAGE_CREATE_AP
+	select BR2_PACKAGE_OTTOUPDATE
+	select BR2_PACKAGE_PYTHON
+	select BR2_PACKAGE_PYTHON_BOTTLE
+	help
+	  Full software stack for OTTO camera
+
 	source package/stak/ottosdk/Config.in
 
 	menu "Libraries"
@@ -10,6 +21,7 @@ menu "Stak"
 		source package/stak/platform/raspberrypi/rpi-userland/Config.in
 		source package/stak/platform/raspberrypi/dcfldd/Config.in
 		source package/stak/platform/raspberrypi/ottoupdate/Config.in
+		source package/stak/platform/raspberrypi/create_ap/Config.in
 		source package/stak/platform/rtl81xx/Config.in
 	endmenu
 endmenu

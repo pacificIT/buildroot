@@ -38,6 +38,10 @@ ifeq ($(BR2_PACKAGE_OTTOSDK),y)
 	include package/stak/ottosdk/ottosdk.mk
 endif
 
+ifeq ($(BR2_PACKAGE_CREATE_AP),y)
+	include package/stak/platform/raspberrypi/create_ap/create_ap.mk
+endif
+
 
 ifeq ($(BR2_PACKAGE_RTL81XX),y)
 	include package/stak/platform/rtl81xx/rtl81xx.mk

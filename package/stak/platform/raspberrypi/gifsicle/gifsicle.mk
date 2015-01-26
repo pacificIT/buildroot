@@ -11,8 +11,11 @@ GIFSICLE_LICENSE_FILES = LICENCE
 
 
 define GIFSICLE_BUILD_CMDS
-    cd $(@D); $(AUTORECONF) -i; ./configure
-    $(MAKE) CC="$(TARGET_CC)" LD="$(TARGET_LD)" -C $(@D) all
+    cd $(@D); $(AUTORECONF) -i; \
+        $(TARGET_CONFIGURE_OPTS) ./configure \
+            --prefix=/usr --sysconfdir=/etc \
+            --host=$(GNU_TARGET_NAME)
+    $(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D) all
 endef
 
 define GIFSICLE_INSTALL_TARGET_CMDS

@@ -11,11 +11,13 @@ DD=`which dd`
 MOUNT=`which mount`
 UMOUNT=`which umount`
 
+RECOVERY_BOOT_DIR=output/sd_card/boot-recovery
 BOOT_DIR=output/sd_card/boot
 ROOT_DIR=output/sd_card/root
 
 mkdir -p ${BOOT_DIR}
 mkdir -p ${ROOT_DIR}
+mkdir -p ${RECOVERY_BOOT_DIR}
 
 sudo ${TAR} xvpsf output/images/rootfs.tar -C ${ROOT_DIR} > /dev/null 2>&1
 
@@ -23,22 +25,33 @@ sudo ${CP} output/build/rpi-firmware-*/boot/bootcode.bin ${BOOT_DIR}/ > /dev/nul
 sudo ${CP} output/build/rpi-firmware-*/boot/start.elf ${BOOT_DIR}/ > /dev/null 2>&1
 sudo ${CP} output/build/rpi-firmware-*/boot/start_x.elf ${BOOT_DIR}/ > /dev/null 2>&1
 sudo ${CP} output/build/rpi-firmware-*/boot/fixup.dat ${BOOT_DIR}/ > /dev/null 2>&1
-#sudo ${CP} output/images/rootfs.cpio.gz ${BOOT_DIR}/ > /dev/null 2>&1
-#sudo ${CP} output/images/rpi-firmware/* ${BOOT_DIR}/ > /dev/null 2>&1
+
 sudo ${CP} ${STAK_SUPPORT}/cmdline.txt ${BOOT_DIR}/cmdline.txt > /dev/null 2>&1
 sudo ${CP} ${STAK_SUPPORT}/config.txt ${BOOT_DIR}/config.txt > /dev/null 2>&1
+sudo install -m 775 ${STAK_SUPPORT}/dt-blob.bin				${BOOT_DIR}/
+
 sudo ${CP} output/images/zImage ${BOOT_DIR}/kernel.img > /dev/null 2>&1
 
-sudo install -m 775 ${STAK_SUPPORT}/dt-blob.bin				${BOOT_DIR}/
+sudo ${CP} output/build/rpi-firmware-*/boot/bootcode.bin ${RECOVERY_BOOT_DIR}/ > /dev/null 2>&1
+sudo ${CP} output/build/rpi-firmware-*/boot/start.elf ${RECOVERY_BOOT_DIR}/ > /dev/null 2>&1
+sudo ${CP} output/build/rpi-firmware-*/boot/start_x.elf ${RECOVERY_BOOT_DIR}/ > /dev/null 2>&1
+sudo ${CP} output/build/rpi-firmware-*/boot/fixup.dat ${RECOVERY_BOOT_DIR}/ > /dev/null 2>&1
+sudo ${CP} ${STAK_SUPPORT}/boot-recovery/* ${RECOVERY_BOOT_DIR}/ > /dev/null 2>&1
+sudo install -m 775 ${STAK_SUPPORT}/dt-blob.bin				${RECOVERY_BOOT_DIR}/
+
 sudo install -m 775 ${STAK_SUPPORT}/root/etc/init.d/S04mountupdate	${ROOT_DIR}/etc/init.d
 
 ROOTSIZE_MB="$(( ( `sudo du -h -s -S --total ${ROOT_DIR}/ | tail -1 | cut -f 1 | sed s'/.$//'`) + 10))"
 
 BOOTSIZE=`sudo du -h -s -S --total ${BOOT_DIR}/ | tail -1 | cut -f 1 | sed s'/.$//' | awk '{printf("%d\n",$1 + 0.5)}'`
 BOOTSIZE_MB="$(( $BOOTSIZE + 4 ))"
-TOTAL_SIZE="$(( $ROOTSIZE_MB * 2 + $BOOTSIZE_MB * 2 + 14))"
+
+RECOVERY_BOOTSIZE=`sudo du -h -s -S --total ${RECOVERY_BOOT_DIR}/ | tail -1 | cut -f 1 | sed s'/.$//' | awk '{printf("%d\n",$1 + 0.5)}'`
+
+TOTAL_SIZE="$(( $ROOTSIZE_MB * 2 + $BOOTSIZE_MB + $RECOVERY_BOOTSIZE + 14))"
 
 echo "Boot Size: $BOOTSIZE_MB"
+echo "Recovery boot: $RECOVERY_BOOTSIZE"
 echo "Root Size: $ROOTSIZE_MB"
 echo "Total Size: $TOTAL_SIZE"
 if [ -d $IMAGE ]; then
@@ -64,7 +77,7 @@ ${FDISK} ${IMAGE} > /dev/null 2>&1 <<-END
 	p
 	2
 	
-	+${BOOTSIZE_MB}M
+	+${RECOVERY_BOOTSIZE}M
 	
 	n
 	p
@@ -122,7 +135,7 @@ sudo ${MOUNT} -t ext4 -w ${ROOTLOOP} sdimage/root
 sudo ${MOUNT} -t vfat -w ${DATALOOP} sdimage/data
 
 sudo ${CP} -rf ${BOOT_DIR}/* sdimage/boot
-sudo ${CP} -rf ${BOOT_DIR}/* sdimage/recovery
+sudo ${CP} -rf ${RECOVERY_BOOT_DIR}/* sdimage/recovery
 sudo ${CP} -rf ${ROOT_DIR}/* sdimage/root
 
 
