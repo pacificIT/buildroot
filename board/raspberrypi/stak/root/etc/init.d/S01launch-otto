@@ -5,11 +5,13 @@
 PIDFILE=/var/lock/otto
 case "$1" in
   start)
-	start-stop-daemon --start --quiet --pidfile $PIDFILE --exec main
+	sed -i "/^kernel=/c\kernel=kernel.img" /boot/config.txt
+	reboot
+	# start-stop-daemon --start --quiet --pidfile $PIDFILE --exec main
 	# exec main
 	;;
   stop)
-	start-stop-daemon --stop --quiet --pidfile $PIDFILE
+	# start-stop-daemon --stop --quiet --pidfile $PIDFILE
 	;;
   restart|reload)
 	;;

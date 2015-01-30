@@ -19,6 +19,13 @@ mkdir -p ${BOOT_DIR}
 mkdir -p ${ROOT_DIR}
 mkdir -p ${RECOVERY_BOOT_DIR}
 
+# get and build otto-recovery-boot-enable binary
+git clone https://github.com/NextThingCo/otto-recovery-boot-enable.git output/build/otto-recovery-boot-enable > /dev/null 2>&1
+pushd output/build/otto-recovery-boot-enable/
+TOOLCHAIN_TRIPLE="arm-none-eabi-" ./build.sh
+popd
+
+# extract rootfs to ${ROOT_DIR}
 sudo ${TAR} xvpsf output/images/rootfs.tar -C ${ROOT_DIR} > /dev/null 2>&1
 
 sudo ${CP} output/build/rpi-firmware-*/boot/bootcode.bin ${BOOT_DIR}/ > /dev/null 2>&1
@@ -28,7 +35,8 @@ sudo ${CP} output/build/rpi-firmware-*/boot/fixup.dat ${BOOT_DIR}/ > /dev/null 2
 
 sudo ${CP} ${STAK_SUPPORT}/cmdline.txt ${BOOT_DIR}/cmdline.txt > /dev/null 2>&1
 sudo ${CP} ${STAK_SUPPORT}/config.txt ${BOOT_DIR}/config.txt > /dev/null 2>&1
-sudo install -m 775 ${STAK_SUPPORT}/dt-blob.bin				${BOOT_DIR}/
+sudo install -m 775 ${STAK_SUPPORT}/dt-blob.bin	${BOOT_DIR}/ > /dev/null 2>&1
+sudo install -m 775 output/build/otto-recovery-boot-enable/output/main.bin ${BOOT_DIR}/boot-recovery.img > /dev/null 2>&1
 
 sudo ${CP} output/images/zImage ${BOOT_DIR}/kernel.img > /dev/null 2>&1
 
@@ -37,9 +45,9 @@ sudo ${CP} output/build/rpi-firmware-*/boot/start.elf ${RECOVERY_BOOT_DIR}/ > /d
 sudo ${CP} output/build/rpi-firmware-*/boot/start_x.elf ${RECOVERY_BOOT_DIR}/ > /dev/null 2>&1
 sudo ${CP} output/build/rpi-firmware-*/boot/fixup.dat ${RECOVERY_BOOT_DIR}/ > /dev/null 2>&1
 sudo ${CP} ${STAK_SUPPORT}/boot-recovery/* ${RECOVERY_BOOT_DIR}/ > /dev/null 2>&1
-sudo install -m 775 ${STAK_SUPPORT}/dt-blob.bin				${RECOVERY_BOOT_DIR}/
+sudo install -m 775 ${STAK_SUPPORT}/dt-blob.bin	${RECOVERY_BOOT_DIR}/
 
-sudo install -m 775 ${STAK_SUPPORT}/root/etc/init.d/*	${ROOT_DIR}/etc/init.d
+# sudo install -m 775 ${STAK_SUPPORT}/root/etc/init.d/*	${ROOT_DIR}/etc/init.d
 
 ROOTSIZE_MB="$(( ( `sudo du -h -s -S --total ${ROOT_DIR}/ | tail -1 | cut -f 1 | sed s'/.$//'`) + 10))"
 
@@ -165,12 +173,20 @@ sudo ${UMOUNT} sdimage/root
 sudo ${KPARTX} -d ${IMAGE} > /dev/null 2>&1
 sudo rm -Rf sdimage/
 
-sudo rm -rf ${BOOT_DIR}
+# sudo rm -rf ${BOOT_DIR}
 # sudo rm -rf ${ROOT_DIR}
 # bzip2 ${IMAGE}
 
 echo "Uploading to S3"
 
-UPLOADNAME=stak-nightly-`date '+%Y-%m-%d-%s'`.img
+BUILDNUMBER=`git rev-list --count --first-parent HEAD`
+UPLOADNAME=stak-nightly-`date '+%Y-%m-%d-%s'`-r$BUILDNUMBER.img
+echo "$UPLOADNAME" > output/images/latest
+s3cmd put --acl-public --no-guess-mime-type --disable-multipart output/images/latest s3://stak-images/nightlies/latest
+
+# LATEST_IMAGE=`
 s3cmd put --acl-public --no-guess-mime-type --disable-multipart ${IMAGE} s3://stak-images/nightlies/${UPLOADNAME}
+# | sed 's/^.\+\(stak\-nightly\-.*\.img\).*$/\1/'`
+
+echo "Uploaded image $UPLOADNAME"
 echo "Complete!"
