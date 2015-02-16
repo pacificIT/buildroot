@@ -9,7 +9,7 @@ SERVER=/home/pi/otto-sdk/python/server.py
 case "$1" in
   start)
 	# exec main
-	start-stop-daemon --start --quiet --pidfile $PIDFILE --exec python -- $SERVER
+	start-stop-daemon --start --background --quiet --pidfile $PIDFILE --exec python -- $SERVER
 	;;
   stop)
 	start-stop-daemon --stop --quiet --pidfile $PIDFILE
@@ -19,7 +19,7 @@ case "$1" in
   *)
 	echo "Usage: $0 {start|stop|restart}"
 	start-stop-daemon --stop --quiet --oknodo --retry 30 --pidfile $PIDFILE
-	start-stop-daemon --start --quiet --pidfile $PIDFILE --exec python -- $SERVER
+	start-stop-daemon --start --background --quiet --pidfile $PIDFILE --exec python -- $SERVER
 	exit 1
 esac
 

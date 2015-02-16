@@ -47,7 +47,7 @@ sudo ${CP} output/build/rpi-firmware-*/boot/fixup.dat ${RECOVERY_BOOT_DIR}/ > /d
 sudo ${CP} ${STAK_SUPPORT}/boot-recovery/* ${RECOVERY_BOOT_DIR}/ > /dev/null 2>&1
 sudo install -m 775 ${STAK_SUPPORT}/dt-blob.bin	${RECOVERY_BOOT_DIR}/
 
-# sudo install -m 775 ${STAK_SUPPORT}/root/etc/init.d/*	${ROOT_DIR}/etc/init.d
+sudo install -m 775 ${STAK_SUPPORT}/root/etc/init.d/*	${ROOT_DIR}/etc/init.d
 
 ROOTSIZE_MB="$(( ( `sudo du -h -s -S --total ${ROOT_DIR}/ | tail -1 | cut -f 1 | sed s'/.$//'`) + 10))"
 
