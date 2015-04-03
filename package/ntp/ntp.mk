@@ -5,11 +5,9 @@
 ################################################################################
 
 NTP_VERSION_MAJOR = 4.2
-NTP_VERSION = $(NTP_VERSION_MAJOR).8
+NTP_VERSION = $(NTP_VERSION_MAJOR).8p1
 NTP_SITE = http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-$(NTP_VERSION_MAJOR)
 NTP_DEPENDENCIES = host-pkgconf libevent
-# For 0001-fix-ntp-keygen-without-openssl.patch
-NTP_AUTORECONF = YES
 NTP_LICENSE = ntp license
 NTP_LICENSE_FILES = COPYRIGHT
 NTP_CONF_ENV = ac_cv_lib_md5_MD5Init=no
@@ -21,29 +19,29 @@ NTP_CONF_OPTS = \
 	--disable-local-libevent
 
 ifneq ($(BR2_INET_IPV6),y)
-	NTP_CONF_ENV += isc_cv_have_in6addr_any=no
+NTP_CONF_ENV += isc_cv_have_in6addr_any=no
 endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
-	NTP_CONF_OPTS += --with-crypto
-	NTP_DEPENDENCIES += openssl
+NTP_CONF_OPTS += --with-crypto
+NTP_DEPENDENCIES += openssl
 else
-	NTP_CONF_OPTS += --without-crypto --disable-openssl-random
+NTP_CONF_OPTS += --without-crypto --disable-openssl-random
 endif
 
 ifeq ($(BR2_PACKAGE_NTP_NTPSNMPD),y)
-	NTP_CONF_OPTS += \
-		--with-net-snmp-config=$(STAGING_DIR)/usr/bin/net-snmp-config
-	NTP_DEPENDENCIES += netsnmp
+NTP_CONF_OPTS += \
+	--with-net-snmp-config=$(STAGING_DIR)/usr/bin/net-snmp-config
+NTP_DEPENDENCIES += netsnmp
 else
-	NTP_CONF_OPTS += --without-ntpsnmpd
+NTP_CONF_OPTS += --without-ntpsnmpd
 endif
 
 ifeq ($(BR2_PACKAGE_NTP_NTPD_ATOM_PPS),y)
-	NTP_CONF_OPTS += --enable-ATOM
-	NTP_DEPENDENCIES += pps-tools
+NTP_CONF_OPTS += --enable-ATOM
+NTP_DEPENDENCIES += pps-tools
 else
-	NTP_CONF_OPTS += --disable-ATOM
+NTP_CONF_OPTS += --disable-ATOM
 endif
 
 define NTP_PATCH_FIXUPS
@@ -73,9 +71,10 @@ define NTP_INSTALL_INIT_SYSV
 endef
 
 define NTP_INSTALL_INIT_SYSTEMD
-	$(INSTALL) -D -m 644 package/ntp/ntpd.service $(TARGET_DIR)/etc/systemd/system/ntpd.service
+	$(INSTALL) -D -m 644 package/ntp/ntpd.service $(TARGET_DIR)/usr/lib/systemd/system/ntpd.service
 	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -fs ../ntpd.service $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/ntpd.service
+	ln -fs ../../../../usr/lib/systemd/system/ntpd.service \
+		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/ntpd.service
 endef
 endif
 

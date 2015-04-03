@@ -4,12 +4,9 @@
 #
 ################################################################################
 
-IMAGEMAGICK_VERSION = 6.9.0-3
+IMAGEMAGICK_VERSION = 6.9.1-0
 IMAGEMAGICK_SOURCE = ImageMagick-$(IMAGEMAGICK_VERSION).tar.xz
-# The official ImageMagick site only keeps the latest versions
-# available, which is annoying. Use an alternate site that keeps all
-# older versions.
-IMAGEMAGICK_SITE = ftp://ftp.nluug.nl/pub/ImageMagick
+IMAGEMAGICK_SITE = http://www.imagemagick.org/download/releases
 IMAGEMAGICK_LICENSE = Apache-2.0
 IMAGEMAGICK_LICENSE_FILES = LICENSE
 
@@ -21,11 +18,7 @@ ifeq ($(BR2_INSTALL_LIBSTDCPP)$(BR2_USE_WCHAR),yy)
 IMAGEMAGICK_CONFIG_SCRIPTS += Magick++-config
 endif
 
-ifeq ($(BR2_LARGEFILE),y)
 IMAGEMAGICK_CONF_ENV = ac_cv_sys_file_offset_bits=64
-else
-IMAGEMAGICK_CONF_ENV = ac_cv_sys_file_offset_bits=32
-endif
 
 IMAGEMAGICK_CONF_OPTS = \
 	--program-transform-name='s,,,' \

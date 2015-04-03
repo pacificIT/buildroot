@@ -1,2 +1,2 @@
-# From http://www.openntpd.org/txt/release-5.7p1.txt
-sha256	071cfdcfc179c481568a2b8262945243a3123abfc7fa8831da1bbff3729b8307	openntpd-5.7p1.tar.gz
+# From ftp://ftp.openbsd.org/pub/OpenBSD/OpenNTPD/SHA256
+sha256	a993d95976e375acc0ab1a677fd268f55024477835633c8ae404895046bccb23	openntpd-5.7p4.tar.gz

@@ -22,7 +22,9 @@ OPENVMTOOLS_DEPENDENCIES += libfuse
 endif
 
 ifeq ($(BR2_PACKAGE_OPENVMTOOLS_PROCPS),y)
-OPENVMTOOLS_CONF_ENV += CUSTOM_PROCPS_NAME=procps
+# Set CUSTOM_PROCPS_LIBS to " " otherwise -L/lib is used by default.
+OPENVMTOOLS_CONF_ENV += CUSTOM_PROCPS_NAME=procps \
+	CUSTOM_PROCPS_LIBS=" "
 OPENVMTOOLS_CONF_OPTS += --with-procps
 OPENVMTOOLS_DEPENDENCIES += procps-ng
 else
@@ -65,9 +67,9 @@ endef
 
 define OPENVMTOOLS_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 644 package/openvmtools/vmtoolsd.service \
-		$(TARGET_DIR)/etc/systemd/system/vmtoolsd.service
+		$(TARGET_DIR)/usr/lib/systemd/system/vmtoolsd.service
 	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -fs ../vmtoolsd.service \
+	ln -fs ../../../../usr/lib/systemd/system/vmtoolsd.service \
 		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/vmtoolsd.service
 endef
 

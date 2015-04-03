@@ -69,7 +69,7 @@ define LIBTOOL_PATCH_HOOK
 		elif test $${ltmain_version} = "2.2"; then\
 			$(APPLY_PATCHES) $${i%/*} support/libtool buildroot-libtool-v2.2.patch; \
 		elif test $${ltmain_version} = "2.4"; then\
-			if test $${ltmain_patchlevel} -gt 2; then\
+			if test $${ltmain_patchlevel:-0} -gt 2; then\
 				$(APPLY_PATCHES) $${i%/*} support/libtool buildroot-libtool-v2.4.4.patch; \
 			else \
 				$(APPLY_PATCHES) $${i%/*} support/libtool buildroot-libtool-v2.4.patch; \
@@ -193,6 +193,7 @@ define $(2)_CONFIGURE_CMDS
 		--localstatedir=/var \
 		--program-prefix="" \
 		--disable-gtk-doc \
+		--disable-gtk-doc-html \
 		--disable-doc \
 		--disable-docs \
 		--disable-documentation \
@@ -200,7 +201,6 @@ define $(2)_CONFIGURE_CMDS
 		--with-fop=no \
 		--disable-dependency-tracking \
 		$$(DISABLE_NLS) \
-		$$(DISABLE_LARGEFILE) \
 		$$(DISABLE_IPV6) \
 		$$(ENABLE_DEBUG) \
 		$$(SHARED_STATIC_LIBS_OPTS) \
@@ -226,6 +226,7 @@ define $(2)_CONFIGURE_CMDS
 		--localstatedir="$$(HOST_DIR)/var" \
 		--enable-shared --disable-static \
 		--disable-gtk-doc \
+		--disable-gtk-doc-html \
 		--disable-doc \
 		--disable-docs \
 		--disable-documentation \

@@ -136,10 +136,7 @@ ifeq ($(BR2_DEBUG_3),y)
 TARGET_DEBUGGING = -g3
 endif
 
-ifeq ($(BR2_LARGEFILE),y)
 TARGET_CPPFLAGS += -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
-endif
-
 TARGET_CFLAGS = $(TARGET_CPPFLAGS) $(TARGET_ABI) $(TARGET_OPTIMIZATION) $(TARGET_DEBUGGING)
 TARGET_CXXFLAGS = $(TARGET_CFLAGS)
 TARGET_LDFLAGS = $(call qstrip,$(BR2_TARGET_LDFLAGS))
@@ -326,7 +323,8 @@ HOST_MAKE_ENV = \
 EXTRA_ENV = \
 	PATH=$(BR_PATH) \
 	BR2_DL_DIR=$(BR2_DL_DIR) \
-	BUILD_DIR=$(BUILD_DIR)
+	BUILD_DIR=$(BUILD_DIR) \
+	BR2_EXTERNAL=$(BR2_EXTERNAL)
 
 ################################################################################
 # settings we need to pass to configure
@@ -372,10 +370,6 @@ else
 DISABLE_NLS :=--disable-nls
 endif
 
-ifneq ($(BR2_LARGEFILE),y)
-DISABLE_LARGEFILE = --disable-largefile
-endif
-
 ifeq ($(BR2_INET_IPV6),y)
 DISABLE_IPV6 = --enable-ipv6
 else
@@ -416,3 +410,4 @@ include package/pkg-python.mk
 include package/pkg-virtual.mk
 include package/pkg-generic.mk
 include package/pkg-kconfig.mk
+include package/pkg-rebar.mk

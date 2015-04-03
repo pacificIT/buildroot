@@ -1,2 +1,2 @@
-# From http://lists.freedesktop.org/archives/wayland-devel/2014-December/018750.html
-sha256 129f485afe5e4a9394641293991c97cb99f5f3338340d0d65b704ff463d1579e  libinput-0.7.0.tar.xz
+# From http://lists.freedesktop.org/archives/wayland-devel/2015-March/020475.html
+sha256	6e0ce9dd9ff04e9ac382dffb7fa332b94f093227a197a9c8189e87de6d88b55a	libinput-0.12.0.tar.xz

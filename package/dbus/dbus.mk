@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-DBUS_VERSION = 1.8.14
+DBUS_VERSION = 1.8.16
 DBUS_SITE = http://dbus.freedesktop.org/releases/dbus
 DBUS_LICENSE = AFLv2.1 GPLv2+
 DBUS_LICENSE_FILES = COPYING
@@ -54,7 +54,7 @@ endif
 ifeq ($(BR2_INIT_SYSTEMD),y)
 DBUS_CONF_OPTS += \
 	--enable-systemd \
-	--with-systemdsystemunitdir=/lib/systemd/system
+	--with-systemdsystemunitdir=/usr/lib/systemd/system
 DBUS_DEPENDENCIES += systemd
 else
 DBUS_CONF_OPTS += --disable-systemd
