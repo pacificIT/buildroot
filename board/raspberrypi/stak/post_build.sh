@@ -20,7 +20,7 @@ mkdir -p ${ROOT_DIR}
 mkdir -p ${RECOVERY_BOOT_DIR}
 
 # get and build otto-recovery-boot-enable binary
-git clone https://github.com/NextThingCo/otto-recovery-boot-enable.git output/build/otto-recovery-boot-enable > /dev/null 2>&1
+git clone git@github.com:NextThingCo/otto-recovery-boot-enable.git output/build/otto-recovery-boot-enable > /dev/null 2>&1
 pushd output/build/otto-recovery-boot-enable/
 TOOLCHAIN_TRIPLE="arm-none-eabi-" ./build.sh
 popd

@@ -18,8 +18,17 @@ ifeq ($(BR2_PACKAGE_BX),y)
 	include package/stak/platform/raspberrypi/bx/bx.mk
 endif
 
+
+ifeq ($(BR2_PACKAGE_LIBOTTOHARDWARE),y)
+	include package/stak/platform/raspberrypi/libOttoHardware/libOttoHardware.mk
+endif
+
 ifeq ($(BR2_PACKAGE_OTTOUPDATE),y)
 	include package/stak/platform/raspberrypi/ottoupdate/ottoupdate.mk
+endif
+
+ifeq ($(BR2_PACKAGE_OTTO_RUNNER),y)
+	include package/stak/platform/raspberrypi/otto-runner/otto-runner.mk
 endif
 
 ifeq ($(BR2_PACKAGE_DCFLDD),y)
