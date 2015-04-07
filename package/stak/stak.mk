@@ -55,3 +55,12 @@ endif
 ifeq ($(BR2_PACKAGE_RTL81XX),y)
 	include package/stak/platform/rtl81xx/rtl81xx.mk
 endif
+
+ifeq ($(BR2_PACKAGE_FWUP),y)
+	include package/stak/platform/generic/fwup/fwup.mk
+endif
+
+
+ifeq ($(BR2_PACKAGE_HOST_FWUP),y)
+	include package/stak/platform/generic/fwup/fwup.mk
+endif
