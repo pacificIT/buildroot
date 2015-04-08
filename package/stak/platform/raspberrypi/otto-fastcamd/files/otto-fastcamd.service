@@ -1,0 +1,11 @@
+[Unit]
+Description=OTTO bootup script
+After=syslog.target auditd.service
+
+[Service]
+ExecStart=/usr/bin/raspifastcamd -w 640 -h 480 -e gif -o "1-/stak/tmp_%04d.gif"
+ExecStop=/bin/kill $MAINPID
+PIDFile=/var/lock/otto-fastcamd.pid
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,10 @@
+[Unit]
+Description=OTTO bootup script
+After=syslog.target auditd.service
+
+[Service]
+ExecStart=/usr/bin/otto-runner /stak/sdk/libotto_menu.so /stak/sdk/libotto_gif-mode.so
+ExecStop=/bin/kill -SIGINT $MAINPID
+
+[Install]
+WantedBy=multi-user.target

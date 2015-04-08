@@ -18,6 +18,10 @@ ifeq ($(BR2_PACKAGE_BX),y)
 	include package/stak/platform/raspberrypi/bx/bx.mk
 endif
 
+ifeq ($(BR2_PACKAGE_OTTO_FASTCAMD),y)
+	include package/stak/platform/raspberrypi/otto-fastcamd/otto-fastcamd.mk
+endif
+
 
 ifeq ($(BR2_PACKAGE_LIBOTTOHARDWARE),y)
 	include package/stak/platform/raspberrypi/libOttoHardware/libOttoHardware.mk
@@ -29,6 +33,22 @@ endif
 
 ifeq ($(BR2_PACKAGE_OTTO_RUNNER),y)
 	include package/stak/platform/raspberrypi/otto-runner/otto-runner.mk
+endif
+
+ifeq ($(BR2_PACKAGE_OTTO_BOOT),y)
+	include package/stak/platform/raspberrypi/otto-boot/otto-boot.mk
+endif
+
+ifeq ($(BR2_PACKAGE_OTTO_GFX),y)
+	include package/stak/platform/raspberrypi/otto-gfx/otto-gfx.mk
+endif
+
+ifeq ($(BR2_PACKAGE_OTTO_MENU),y)
+	include package/stak/platform/raspberrypi/otto-menu/otto-menu.mk
+endif
+
+ifeq ($(BR2_PACKAGE_OTTO_GIF_MODE),y)
+	include package/stak/platform/raspberrypi/otto-gif-mode/otto-gif-mode.mk
 endif
 
 ifeq ($(BR2_PACKAGE_DCFLDD),y)
