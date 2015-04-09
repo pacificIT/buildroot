@@ -9,6 +9,7 @@ RPI_FIRMWARE_SITE = $(call github,raspberrypi,firmware,$(RPI_FIRMWARE_VERSION))
 RPI_FIRMWARE_LICENSE = BSD-3c
 RPI_FIRMWARE_LICENSE_FILES = boot/LICENCE.broadcom
 RPI_FIRMWARE_INSTALL_TARGET = NO
+RPI_FIRMWARE_INSTALL_STAGING = YES
 RPI_FIRMWARE_INSTALL_IMAGES = YES
 
 RPI_FIRMWARE_DEPENDENCIES += host-rpi-firmware
@@ -37,8 +38,14 @@ HOST_RPI_FIRMWARE_SOURCE =
 HOST_RPI_FIRMWARE_DEPENDENCIES =
 
 define HOST_RPI_FIRMWARE_INSTALL_CMDS
-	$(INSTALL) -D -m 0755 package/rpi-firmware/mkknlimg $(HOST_DIR)/usr/bin/mkknlimg
+ 	$(INSTALL) -D -m 0755 package/rpi-firmware/mkknlimg $(HOST_DIR)/usr/bin/mkknlimg
 endef
+
+define RPI_FIRMWARE_INSTALL_STAGING_CMDS
+	$(INSTALL) -d -m 0755 $(STAGING_DIR)/opt/vc
+ 	cp -rf $(@D)/hardfp/opt/vc/* $(STAGING_DIR)/opt/vc
+endef
+
 
 $(eval $(generic-package))
 $(eval $(host-generic-package))
