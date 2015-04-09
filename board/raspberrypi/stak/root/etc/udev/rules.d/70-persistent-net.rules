@@ -1,0 +1,2 @@
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{type}=="1", KERNEL=="eth*", NAME="%k", RUN+="/sbin/ifup eth%n"
+SUBSYSTEM=="net", ACTION=="remove", DRIVERS=="?*", ATTR{type}=="1", KERNEL=="eth*", NAME="%k", RUN+="/sbin/ifdown eth%n"
