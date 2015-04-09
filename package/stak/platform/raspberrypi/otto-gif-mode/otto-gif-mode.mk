@@ -1,17 +1,17 @@
 #############################################################
 #
-# otto-menu
+# otto-gif-mode
 #
 #############################################################
 
-OTTO_GIF_MODE_VERSION = 7afccbb457659fef3e4bd65d4065024d35c3468f
+OTTO_GIF_MODE_VERSION = adbc25fd1f1d032e42808b84d4ecfc7b9a1c7dc4  
 OTTO_GIF_MODE_SITE = git@github.com:NextThingCo/otto-gif-mode.git
 OTTO_GIF_MODE_SITE_METHOD = git
 OTTO_GIF_MODE_LICENSE = GPLv2
 OTTO_GIF_MODE_LICENSE_FILES = LICENCE
-OTTO_GIF_MODE_CFLAGS = $(TARGET_CFLAGS) -march=armv6 -mfloat-abi=hard
 OTTO_GIF_MODE_INSTALL_STAGING = NO
 OTTO_GIF_MODE_INSTALL_TARGET = YES
+OTTO_GIF_MODE_CONF_OPTS = -DCMAKE_C_FLAGS="$(TARGET_CFLAGS) -march=armv6 -mfloat-abi=hard" -DVC_SDK="$(STAGING_DIR)/opt/vc"
 
 define OTTO_GIF_MODE_GIT_SUBMODULE_FIXUP
 	git clone git@github.com:sansumbrella/Choreograph.git $(@D)/deps/Choreograph
@@ -23,7 +23,9 @@ endef
 
 define OTTO_GIF_MODE_INSTALL_TARGET_CMDS
   $(INSTALL) -d 0644 $(TARGET_DIR)/stak/sdk
+  $(INSTALL) -d 0644 $(TARGET_DIR)/stak/sdk/assets
   $(INSTALL) -m 0755 $(@D)/libotto_gif_mode.so $(TARGET_DIR)/stak/sdk
+  $(INSTALL) -m 0755 $(@D)/assets/* $(TARGET_DIR)/stak/sdk/assets
 endef
 
 OTTO_GIF_MODE_POST_DOWNLOAD_HOOKS += OTTO_GIF_MODE_GIT_SUBMODULE_FIXUP
