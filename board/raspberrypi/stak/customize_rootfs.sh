@@ -18,3 +18,5 @@ sed -e "s/auto \(eth.*\)/allow-hotplug \1/g" ${TARGET_DIR}/etc/network/interface
 # sudo install -m 775 ${BUILD_ROOT}/board/raspberrypi/stak/root/etc/init.d/S03loadmodules   ${TARGET_DIR}/etc/init.d
 # sudo install -m 775 ${BUILD_ROOT}/board/raspberrypi/stak/root/etc/init.d/*   ${TARGET_DIR}/etc/init.d
 sudo install -m 775 ${BUILD_ROOT}/board/raspberrypi/stak/root/etc/udev/rules.d/*   ${TARGET_DIR}/etc/udev/rules.d
+
+echo "Welcome to stack update $(date)" >${TARGET_DIR}/etc/issue
