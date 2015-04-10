@@ -1,6 +1,0 @@
-config BR2_PACKAGE_HOST_OTTDATE
-        bool "OttDate (host)"
-        help
-          The Otto Updater
-
-          http://github.com/NextThingCo/OttDate
