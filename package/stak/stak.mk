@@ -80,6 +80,10 @@ ifeq ($(BR2_PACKAGE_FWUP),y)
 	include package/stak/platform/generic/fwup/fwup.mk
 endif
 
+ifeq ($(BR2_PACKAGE_FWUP_HOST),y)
+	include package/stak/platform/generic/fwup/fwup.mk
+endif
+
 ifeq ($(BR2_PACKAGE_OTTDATE),y)
 	include package/stak/platform/generic/OttDate/OttDate.mk
 endif

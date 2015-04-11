@@ -156,10 +156,12 @@ if [ -z "$FWUP" ]; then
 	sudo rm -Rf sdimage/
 
 else
+	DATE=`date '+%Y-%m-%d-%s'`
+
 	echo "fwup configured for this image. Continuing with update support."
 	# Build the firmware image (.fw file)
 	echo "Creating firmware file..."
-	PROJECT_ROOT=${PROJECT_ROOT} ${FWUP} -c -f ${FWUP_CONFIG} -o ${FW_PATH}
+	FW_VERSION=${DATE} PROJECT_ROOT=${PROJECT_ROOT} ${FWUP} -c -f ${FWUP_CONFIG} -o ${FW_PATH}
 
 	# Build a raw image that can be directly written to
 	# an SDCard (remove an exiting file so that the file that
@@ -167,11 +169,11 @@ else
 	# the file. It will work, but may be larger than necessary.)
 	echo "Creating raw SDCard image file..."
 	rm -f ${IMG_PATH}
+
 	$FWUP -a -d ${IMG_PATH} -i ${FW_PATH} -t complete
 
 	echo "Uploading to S3..."
 
-	DATE=`date '+%Y-%m-%d-%s'`
 	BUILDNUMBER=`git rev-list --count --first-parent HEAD`
 	# UPLOADNAME=stak-nightly-`date '+%Y-%m-%d-%s'`-r$BUILDNUMBER.img
 
@@ -228,25 +230,29 @@ else
 		echo "Complete!"
 	}
 	echo "Please select a firmware type to upload:"
-	select num in "Full" "Update" "Both"; do
+	select num in "None" "Full" "Update" "Both"; do
 		case $num in
+			None )
+				break
+			;;
 
 			# create full firmware image
 			Full )
 				fw_upload_full
-			break;;
+				break
+			;;
 
 			# create firmware update image
 			Update )
 				fw_upload_update
-			break
+				break
 			;;
 
 			# create both firmware images
 			Both )
 				fw_upload_full
 				fw_upload_update
-			break
+				break
 			;;
 		esac
 	done

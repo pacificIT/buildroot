@@ -16,6 +16,7 @@ menu "Stak"
 	menu "Libraries"
 		source package/stak/platform/generic/OttDate/Config.in
 		source package/stak/platform/generic/fwup/Config.in
+		source package/stak/platform/generic/fwup/Config.in.host
 		source package/stak/platform/raspberrypi/libbcm2835/Config.in
 		source package/stak/platform/raspberrypi/armmem/Config.in
 		source package/stak/platform/raspberrypi/gifsicle/Config.in

@@ -4,7 +4,7 @@
 #
 #############################################################
 
-OTTO_MENU_VERSION = 6c3dcf29b53e24ea4cca1ec96da53765db626a67
+OTTO_MENU_VERSION = 45c9cd7a3b29ad95a49384e9f9337c63096ad23a
 OTTO_MENU_SITE = git@github.com:NextThingCo/otto-menu.git
 OTTO_MENU_SITE_METHOD = git
 OTTO_MENU_LICENSE = GPLv2
