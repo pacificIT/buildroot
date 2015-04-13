@@ -217,11 +217,11 @@ else
 
 		cat > output/images/latest-update <<-EOF
 			{
-				"update_available": true,
-				"url": "${HTTP_URL}/${FW_UPDATE_PATH}/${FW_UPDATE_NAME}",
-				"size": ${FW_UPDATE_FILESIZE},
-				"checksum": "${FW_UPDATE_CHECKSUM}",
-				"new_version": ${SECS}
+				\"update_available\": true,
+				\"url\": \"${HTTP_URL}/${FW_UPDATE_PATH}/${FW_UPDATE_NAME}\",
+				\"size\": ${FW_UPDATE_FILESIZE},
+				\"checksum\": \"${FW_UPDATE_CHECKSUM}\",
+				\"new_version\": ${SECS}
 			}
 		EOF
 
