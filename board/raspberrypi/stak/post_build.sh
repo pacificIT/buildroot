@@ -156,7 +156,8 @@ if [ -z "$FWUP" ]; then
 	sudo rm -Rf sdimage/
 
 else
-	DATE=`date '+%Y-%m-%d-%s'`
+	SECS=$(date +%s)
+	DATE=`date '+%Y-%m-%d-'`${SECS}
 
 	echo "fwup configured for this image. Continuing with update support."
 	# Build the firmware image (.fw file)
@@ -217,10 +218,10 @@ else
 		cat > output/images/latest-update <<-EOF
 			{
 				"update_available": true,
-			  "url": "${HTTP_URL}/${FW_UPDATE_PATH}/${FW_UPDATE_NAME}",
-			  "size": ${FW_UPDATE_FILESIZE},
-			  "checksum": "${FW_UPDATE_CHECKSUM}",
-			  "new_version": ${DATE}
+				"url": "${HTTP_URL}/${FW_UPDATE_PATH}/${FW_UPDATE_NAME}",
+				"size": ${FW_UPDATE_FILESIZE},
+				"checksum": "${FW_UPDATE_CHECKSUM}",
+				"new_version": ${SECS}
 			}
 		EOF
 
