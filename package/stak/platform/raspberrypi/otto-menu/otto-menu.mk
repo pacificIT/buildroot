@@ -4,11 +4,9 @@
 #
 #############################################################
 
-OTTO_MENU_SITE = /home/ubuntu/otto-menu
-OTTO_MENU_SITE_METHOD = local
-#   OTTO_MENU_VERSION = 90d5e3aceacdfd2c535008fb51a8e097cebebc4a
-#   OTTO_MENU_SITE = git@github.com:NextThingCo/otto-menu.git
-#   OTTO_MENU_SITE_METHOD = git
+OTTO_MENU_VERSION = 90d5e3aceacdfd2c535008fb51a8e097cebebc4a
+OTTO_MENU_SITE = git@github.com:NextThingCo/otto-menu.git
+OTTO_MENU_SITE_METHOD = git
 OTTO_MENU_LICENSE = GPLv2
 OTTO_MENU_LICENSE_FILES = LICENCE
 OTTO_MENU_INSTALL_STAGING = NO
