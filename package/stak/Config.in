@@ -25,6 +25,7 @@ menu "Stak"
 		source package/stak/platform/raspberrypi/dcfldd/Config.in
 		source package/stak/platform/raspberrypi/otto-fastcamd/Config.in
 		source package/stak/platform/raspberrypi/otto-boot/Config.in
+		source package/stak/platform/raspberrypi/otto-hostname/Config.in
 		source package/stak/platform/raspberrypi/ottoupdate/Config.in
 		source package/stak/platform/raspberrypi/otto-gfx/Config.in
 		source package/stak/platform/raspberrypi/otto-runner/Config.in
