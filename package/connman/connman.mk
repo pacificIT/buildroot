@@ -45,4 +45,23 @@ else
 CONNMAN_CONF_OPTS += --disable-client
 endif
 
+
+define CONNMAN_INSTALL_INIT_SYSTEMD
+	$(INSTALL) -m 0644 -D package/connman/files/connman.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/connman.service
+endef
+
+
+define CONNMAN_INSTALL_SETTINGS
+	$(INSTALL) -m 0644 -D package/connman/files/settings \
+		$(TARGET_DIR)/var/lib/connman/settings
+endef
+
+define CONNMAN_INSTALL_CONFIGS
+	$(INSTALL) -m 0644 -D package/connman/files/*.config \
+		$(TARGET_DIR)/var/lib/connman/
+endef
+
+CONNMAN_POST_INSTALL_TARGET_HOOKS += CONNMAN_INSTALL_SETTINGS CONNMAN_INSTALL_CONFIGS
+
 $(eval $(autotools-package))
