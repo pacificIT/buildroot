@@ -174,6 +174,8 @@ define WPA_SUPPLICANT_INSTALL_INIT_SYSTEMD
 		$(TARGET_DIR)/usr/lib/systemd/system/wpa_supplicant-nl80211@.service
 	$(INSTALL) -m 0644 -D $(@D)/$(WPA_SUPPLICANT_SUBDIR)/systemd/wpa_supplicant-wired@.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/wpa_supplicant-wired@.service
+	$(INSTALL) -m 0644 -D package/wpa_supplicant/files/wpa_supplicant.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/wpa_supplicant.service
 endef
 
 $(eval $(generic-package))
