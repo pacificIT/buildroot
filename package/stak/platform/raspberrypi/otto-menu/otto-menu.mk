@@ -13,7 +13,7 @@ OTTO_MENU_LICENSE = GPLv2
 OTTO_MENU_LICENSE_FILES = LICENCE
 OTTO_MENU_INSTALL_STAGING = NO
 OTTO_MENU_INSTALL_TARGET = YES
-OTTO_MENU_CONF_OPTS = -DCMAKE_C_FLAGS="$(TARGET_CFLAGS) -march=armv6 -mfloat-abi=hard" -DVC_SDK="$(STAGING_DIR)/opt/vc"
+OTTO_MENU_CONF_OPTS =-DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_FLAGS="$(TARGET_CFLAGS) -march=armv6 -mfloat-abi=hard" -DVC_SDK="$(STAGING_DIR)/opt/vc"
 
 # define OTTO_MENU_GIT_SUBMODULE_FIXUP
 # 	git clone git@github.com:sansumbrella/Choreograph.git $(@D)/deps/Choreograph

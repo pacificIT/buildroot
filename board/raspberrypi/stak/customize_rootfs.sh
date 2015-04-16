@@ -22,4 +22,9 @@ sudo install -m 775 ${BUILD_ROOT}/board/raspberrypi/stak/root/etc/udev/rules.d/*
 sudo install -T -m 0644 ${BUILD_ROOT}/system/skeleton/etc/fstab ${TARGET_DIR}/etc/fstab
 echo '/dev/mmcblk0p4 /mnt vfat defaults 0 0' | sudo tee --append ${TARGET_DIR}/etc/fstab
 
-echo "Welcome to stack update $(date)" >${TARGET_DIR}/etc/issue
+DATE=`date +%s | sha1sum | awk '{print $1}'`
+
+echo "Stak version: ${DATE}" > ${TARGET_DIR}/etc/issue
+echo "Stak version: ${DATE}" > ${TARGET_DIR}/etc/motd
+
+echo "Stak version: ${DATE}"
