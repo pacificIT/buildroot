@@ -1,0 +1,51 @@
+From 930071ae91b5fede8181c8d1035219e88510ce99 Mon Sep 17 00:00:00 2001
+From: Jason Abele <jason@jasonabeleconsulting.com>
+Date: Tue, 7 Apr 2015 17:26:56 -0700
+Subject: [PATCH] rtl8192cu: HACKY addition of cfg80211 interface support
+
+---
+ drivers/net/wireless/rtl8192cu/Makefile                     |  3 +++
+ .../net/wireless/rtl8192cu/os_dep/linux/ioctl_cfg80211.c    | 13 -------------
+ 2 files changed, 3 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/net/wireless/rtl8192cu/Makefile b/drivers/net/wireless/rtl8192cu/Makefile
+index c399011..bd12a05 100644
+--- a/drivers/net/wireless/rtl8192cu/Makefile
++++ b/drivers/net/wireless/rtl8192cu/Makefile
+@@ -238,6 +238,9 @@ endif
+ 
+ ifeq ($(CONFIG_PLATFORM_I386_PC), y)
+ EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN
++EXTRA_CFLAGS += -DCONFIG_CONCURRENT_MODE
++EXTRA_CFLAGS += -DCONFIG_IOCTL_CFG80211 -DRTW_USE_CFG80211_STA_EVENT
++EXTRA_CFLAGS += -DCONFIG_P2P_IPS
+ SUBARCH := $(shell uname -m | sed -e s/i.86/i386/)
+ ARCH ?= $(SUBARCH)
+ CROSS_COMPILE ?=
+diff --git a/drivers/net/wireless/rtl8192cu/os_dep/linux/ioctl_cfg80211.c b/drivers/net/wireless/rtl8192cu/os_dep/linux/ioctl_cfg80211.c
+index 5975d1e..bfb9533 100644
+--- a/drivers/net/wireless/rtl8192cu/os_dep/linux/ioctl_cfg80211.c
++++ b/drivers/net/wireless/rtl8192cu/os_dep/linux/ioctl_cfg80211.c
+@@ -697,19 +697,6 @@ void rtw_cfg80211_indicate_disconnect(_adapter *padapter)
+ 	}
+ #endif //CONFIG_P2P
+ 
+-	if (!padapter->mlmepriv.not_indic_disco) {
+-		DBG_8192C("pwdev->sme_state(b)=%d\n", pwdev->sme_state);
+-
+-		if(pwdev->sme_state==CFG80211_SME_CONNECTING)
+-			cfg80211_connect_result(padapter->pnetdev, NULL, NULL, 0, NULL, 0, 
+-				WLAN_STATUS_UNSPECIFIED_FAILURE, GFP_ATOMIC/*GFP_KERNEL*/);
+-		else if(pwdev->sme_state==CFG80211_SME_CONNECTED)
+-			cfg80211_disconnected(padapter->pnetdev, 0, NULL, 0, GFP_ATOMIC);
+-		//else
+-			//DBG_8192C("pwdev->sme_state=%d\n", pwdev->sme_state);
+-
+-		DBG_8192C("pwdev->sme_state(a)=%d\n", pwdev->sme_state);
+-	}
+ }
+  	
+ 
+-- 
+1.9.1
+

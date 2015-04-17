@@ -10,7 +10,6 @@ config BR2_PACKAGE_CREATE_AP
 	select BR2_PACKAGE_IW
 	select BR2_PACKAGE_WIRELESS_TOOLS
 	select BR2_PACKAGE_WPA_SUPPLICANT
-	select BR2_PACKAGE_HOSTAPDRTL
 	help
 	  Hardware Interface library for the BCM2835 chip.
 
