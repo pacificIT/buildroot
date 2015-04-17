@@ -1,0 +1,9 @@
+[Unit]
+Description=Pull pin 4 low on shutdown
+DefaultDependencies=no
+Before=shutdown.target halt.target
+
+
+[Service]
+ExecStart=/bin/bash -c "echo 4 > /sys/class/gpio/export && echo \"out\" > /sys/class/gpio/gpio4/direction && echo 0 > /sys/class/gpio/gpio4/value"
+Type=oneshot

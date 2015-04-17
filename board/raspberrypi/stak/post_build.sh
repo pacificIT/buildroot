@@ -156,8 +156,9 @@ if [ -z "$FWUP" ]; then
 	sudo rm -Rf sdimage/
 
 else
-	SECS=$(date +%s)
-	DATE=`date '+%Y-%m-%d-'`${SECS}
+	export SECS=$(cat <${TARGETDIR}/../target/stak/version )
+	echo "***** SECS=${SECS} TARGETDIR=${TARGETDIR}"
+	DATE=`date -d @${SECS} '+%Y-%m-%d-%s'`
 
 	echo "fwup configured for this image. Continuing with update support."
 	# Build the firmware image (.fw file)

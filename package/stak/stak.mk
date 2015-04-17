@@ -39,6 +39,14 @@ ifeq ($(BR2_PACKAGE_OTTO_BOOT),y)
 	include package/stak/platform/raspberrypi/otto-boot/otto-boot.mk
 endif
 
+ifeq ($(BR2_PACKAGE_OTTO_LOGO),y)
+	include package/stak/platform/raspberrypi/otto-logo/otto-logo.mk
+endif
+
+ifeq ($(BR2_PACKAGE_OTTO_SHUTDOWN),y)
+	include package/stak/platform/raspberrypi/otto-shutdown/otto-shutdown.mk
+endif
+
 ifeq ($(BR2_PACKAGE_OTTO_HOSTNAME),y)
 	include package/stak/platform/raspberrypi/otto-hostname/otto-hostname.mk
 endif
