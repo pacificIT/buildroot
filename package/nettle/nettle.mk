@@ -33,3 +33,4 @@ endef
 NETTLE_POST_EXTRACT_HOOKS += NETTLE_DITCH_DEBUGGING_CFLAGS
 
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))
