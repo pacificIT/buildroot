@@ -10,7 +10,7 @@ CRYPTEDPASS=$(perl -e 'print crypt("doge1234","salt")')
 sudo sed -i -e "s#^root:[^:]*:#root:$CRYPTEDPASS:#" ${TARGET_DIR}/etc/shadow
 # echo "/dev/mmcblk0p4          /updates         vfat    defaults   0      0" | sudo tee --append ${TARGET_DIR}/etc/fstab
 
-sed -e "s/auto \(eth.*\)/allow-hotplug \1/g" -i ${TARGET_DIR}/etc/network/interfaces
+# sed -e "s/auto \(eth.*\)/allow-hotplug \1/g" -i ${TARGET_DIR}/etc/network/interfaces
 
 #echo "allow-hotplug eth1" | sudo tee --append ${TARGET_DIR}/etc/network/interfaces
 #echo "iface eth1 inet dhcp" | sudo tee --append ${TARGET_DIR}/etc/network/interfaces

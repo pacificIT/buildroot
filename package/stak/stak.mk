@@ -10,10 +10,6 @@ ifeq ($(BR2_PACKAGE_GIFSICLE),y)
 	include package/stak/platform/raspberrypi/gifsicle/gifsicle.mk
 endif
 
-ifeq ($(BR2_PACKAGE_HOSTAPDRTL),y)
-	include package/stak/platform/raspberrypi/hostapdrtl/hostapdrtl.mk
-endif
-
 ifeq ($(BR2_PACKAGE_BX),y)
 	include package/stak/platform/raspberrypi/bx/bx.mk
 endif
@@ -37,6 +33,10 @@ endif
 
 ifeq ($(BR2_PACKAGE_OTTO_BOOT),y)
 	include package/stak/platform/raspberrypi/otto-boot/otto-boot.mk
+endif
+
+ifeq ($(BR2_PACKAGE_OTTO_WIFI),y)
+	include package/stak/platform/raspberrypi/otto-wifi/otto-wifi.mk
 endif
 
 ifeq ($(BR2_PACKAGE_OTTO_LOGO),y)
