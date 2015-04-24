@@ -23,25 +23,25 @@ define OTTO_NETWORK_SETUP_INSTALL_INIT_SYSTEMD
 		$(TARGET_DIR)/usr/lib/otto-network-setup/query-1.11.2.min.js
 
 	$(INSTALL) -D -m 644 $(@D)/bootstrap/js/bootstrap.js \
-		$(TARGET_DIR)/usr/lib/otto-network-setup/boostrap/js/bootstrap.min.js
+		$(TARGET_DIR)/usr/lib/otto-network-setup/bootstrap/js/bootstrap.min.js
 	
   $(INSTALL) -D -m 644 $(@D)/bootstrap/css/bootstrap.min.css \
-		$(TARGET_DIR)/usr/lib/otto-network-setup/boostrap/css/bootstrap.min.css
+		$(TARGET_DIR)/usr/lib/otto-network-setup/bootstrap/css/bootstrap.min.css
 
   $(INSTALL) -D -m 644 $(@D)/bootstrap/fonts/glyphicons-halflings-regular.woff2 \
-		$(TARGET_DIR)/usr/lib/otto-network-setup/boostrap/fonts/glyphicons-halflings-regular.woff2
+		$(TARGET_DIR)/usr/lib/otto-network-setup/bootstrap/fonts/glyphicons-halflings-regular.woff2
 
   $(INSTALL) -D -m 644 $(@D)/bootstrap/fonts/glyphicons-halflings-regular.svg \
-		$(TARGET_DIR)/usr/lib/otto-network-setup/boostrap/fonts/glyphicons-halflings-regular.svg
+		$(TARGET_DIR)/usr/lib/otto-network-setup/bootstrap/fonts/glyphicons-halflings-regular.svg
 
   $(INSTALL) -D -m 644 $(@D)/bootstrap/fonts/glyphicons-halflings-regular.woff \
-		$(TARGET_DIR)/usr/lib/otto-network-setup/boostrap/fonts/glyphicons-halflings-regular.woff
+		$(TARGET_DIR)/usr/lib/otto-network-setup/bootstrap/fonts/glyphicons-halflings-regular.woff
 
   $(INSTALL) -D -m 644 $(@D)/bootstrap/fonts/glyphicons-halflings-regular.ttf \
-		$(TARGET_DIR)/usr/lib/otto-network-setup/boostrap/fonts/glyphicons-halflings-regular.ttf
+		$(TARGET_DIR)/usr/lib/otto-network-setup/bootstrap/fonts/glyphicons-halflings-regular.ttf
 
   $(INSTALL) -D -m 644 $(@D)/bootstrap/fonts/glyphicons-halflings-regular.eot \
-		$(TARGET_DIR)/usr/lib/otto-network-setup/boostrap/fonts/glyphicons-halflings-regular.eot
+		$(TARGET_DIR)/usr/lib/otto-network-setup/bootstrap/fonts/glyphicons-halflings-regular.eot
 
 	$(INSTALL) -D -m 644 $(@D)/otto-network-setup.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/otto-network-setup.service
