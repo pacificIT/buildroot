@@ -4,19 +4,19 @@
 #
 #############################################################
 
-OTTO_GIF_MODE_VERSION = adbc25fd1f1d032e42808b84d4ecfc7b9a1c7dc4  
+OTTO_GIF_MODE_VERSION = master  
 OTTO_GIF_MODE_SITE = git@github.com:NextThingCo/otto-gif-mode.git
 OTTO_GIF_MODE_SITE_METHOD = git
 OTTO_GIF_MODE_LICENSE = GPLv2
 OTTO_GIF_MODE_LICENSE_FILES = LICENCE
 OTTO_GIF_MODE_INSTALL_STAGING = NO
 OTTO_GIF_MODE_INSTALL_TARGET = YES
-OTTO_GIF_MODE_CONF_OPTS = -DCMAKE_C_FLAGS="$(TARGET_CFLAGS) -march=armv6 -mfloat-abi=hard" -DVC_SDK="$(STAGING_DIR)/opt/vc"
+OTTO_GIF_MODE_CONF_OPTS = -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_FLAGS="$(TARGET_CFLAGS) -march=armv6 -mfloat-abi=hard" -DVC_SDK="$(STAGING_DIR)/opt/vc"
 
 define OTTO_GIF_MODE_GIT_SUBMODULE_FIXUP
+  # git -C $(@D) submodule update --init --recursive
 	git clone git@github.com:sansumbrella/Choreograph.git $(@D)/deps/Choreograph
   git clone git@github.com:alecthomas/entityx.git $(@D)/deps/entityx
-  git clone git@github.com:NextThingCo/otto-gfx.git $(@D)/deps/otto-gfx
   git clone git@github.com:NextThingCo/otto-runner.git $(@D)/deps/otto-runner
 	git clone git@github.com:NextThingCo/otto-utils.git $(@D)/deps/otto-utils
 endef

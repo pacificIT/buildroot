@@ -20,11 +20,13 @@ menu "Stak"
 		source package/stak/platform/raspberrypi/libbcm2835/Config.in
 		source package/stak/platform/raspberrypi/armmem/Config.in
 		source package/stak/platform/raspberrypi/gifsicle/Config.in
-		source package/stak/platform/raspberrypi/hostapdrtl/Config.in
 		source package/stak/platform/raspberrypi/rpi-userland/Config.in
 		source package/stak/platform/raspberrypi/dcfldd/Config.in
 		source package/stak/platform/raspberrypi/otto-fastcamd/Config.in
 		source package/stak/platform/raspberrypi/otto-boot/Config.in
+		source package/stak/platform/raspberrypi/otto-wifi/Config.in
+		source package/stak/platform/raspberrypi/otto-logo/Config.in
+		source package/stak/platform/raspberrypi/otto-shutdown/Config.in
 		source package/stak/platform/raspberrypi/otto-hostname/Config.in
 		source package/stak/platform/raspberrypi/ottoupdate/Config.in
 		source package/stak/platform/raspberrypi/otto-gfx/Config.in
@@ -32,6 +34,7 @@ menu "Stak"
 		source package/stak/platform/raspberrypi/otto-menu/Config.in
 		source package/stak/platform/raspberrypi/otto-gif-mode/Config.in
 		source package/stak/platform/raspberrypi/libOttoHardware/Config.in
+		source package/stak/platform/raspberrypi/nanosvg/Config.in
 		source package/stak/platform/raspberrypi/create_ap/Config.in
 		source package/stak/platform/rtl81xx/Config.in
 	endmenu

@@ -15,11 +15,12 @@ OTTO_MENU_INSTALL_TARGET = YES
 OTTO_MENU_CONF_OPTS = -DCMAKE_PREFIX_PATH=$(STAGING_DIR)/usr/lib/CMake -DCMAKE_C_FLAGS="$(TARGET_CFLAGS) -march=armv6 -mfloat-abi=hard" -DVC_SDK="$(STAGING_DIR)/opt/vc"
 
 define OTTO_MENU_GIT_SUBMODULE_FIXUP
+  # git -C $(@D) submodule update --init --recursive
 	git clone git@github.com:sansumbrella/Choreograph.git $(@D)/deps/Choreograph
   git clone git@github.com:alecthomas/entityx.git $(@D)/deps/entityx
-  git clone git@github.com:NextThingCo/otto-gfx.git $(@D)/deps/otto-gfx
   git clone git@github.com:NextThingCo/otto-runner.git $(@D)/deps/otto-runner
 	git clone git@github.com:NextThingCo/otto-utils.git $(@D)/deps/otto-utils
+  git clone git@github.com:NextThingCo/libOttoHardware.git $(@D)/deps/libOttoHardware
 endef
 
 define OTTO_MENU_INSTALL_TARGET_CMDS

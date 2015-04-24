@@ -3,7 +3,7 @@ Description=OTTO bootup hostname script
 After=syslog.target auditd.service
 
 [Service]
-ExecStart=/bin/bash -c "/bin/hostname stak-$(cat /sys/class/net/eth0/address | head -1 | sed 's/\://g')"
+ExecStart=/bin/bash -c "/bin/hostname otto-$(cat /sys/class/net/eth0/address | head -1 | sed 's/\://g')"
 Restart=no
 
 [Install]

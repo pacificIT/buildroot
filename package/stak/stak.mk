@@ -10,10 +10,6 @@ ifeq ($(BR2_PACKAGE_GIFSICLE),y)
 	include package/stak/platform/raspberrypi/gifsicle/gifsicle.mk
 endif
 
-ifeq ($(BR2_PACKAGE_HOSTAPDRTL),y)
-	include package/stak/platform/raspberrypi/hostapdrtl/hostapdrtl.mk
-endif
-
 ifeq ($(BR2_PACKAGE_BX),y)
 	include package/stak/platform/raspberrypi/bx/bx.mk
 endif
@@ -22,9 +18,12 @@ ifeq ($(BR2_PACKAGE_OTTO_FASTCAMD),y)
 	include package/stak/platform/raspberrypi/otto-fastcamd/otto-fastcamd.mk
 endif
 
-
 ifeq ($(BR2_PACKAGE_LIBOTTOHARDWARE),y)
 	include package/stak/platform/raspberrypi/libOttoHardware/libOttoHardware.mk
+endif
+
+ifeq ($(BR2_PACKAGE_NANOSVG),y)
+	include package/stak/platform/raspberrypi/nanosvg/nanosvg.mk
 endif
 
 ifeq ($(BR2_PACKAGE_OTTOUPDATE),y)
@@ -37,6 +36,18 @@ endif
 
 ifeq ($(BR2_PACKAGE_OTTO_BOOT),y)
 	include package/stak/platform/raspberrypi/otto-boot/otto-boot.mk
+endif
+
+ifeq ($(BR2_PACKAGE_OTTO_WIFI),y)
+	include package/stak/platform/raspberrypi/otto-wifi/otto-wifi.mk
+endif
+
+ifeq ($(BR2_PACKAGE_OTTO_LOGO),y)
+	include package/stak/platform/raspberrypi/otto-logo/otto-logo.mk
+endif
+
+ifeq ($(BR2_PACKAGE_OTTO_SHUTDOWN),y)
+	include package/stak/platform/raspberrypi/otto-shutdown/otto-shutdown.mk
 endif
 
 ifeq ($(BR2_PACKAGE_OTTO_HOSTNAME),y)

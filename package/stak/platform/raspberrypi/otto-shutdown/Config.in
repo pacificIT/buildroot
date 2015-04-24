@@ -1,5 +1,5 @@
-config BR2_PACKAGE_HOSTAPDRTL
-	bool "hostapdrtl"
+config BR2_PACKAGE_OTTO_SHUTDOWN
+	bool "otto-shutdown"
 	depends on BR2_arm
 	help
 	  Hardware Interface library for the BCM2835 chip.
