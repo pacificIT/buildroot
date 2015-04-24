@@ -4,7 +4,7 @@
 #
 #############################################################
 
-OTTO_RUNNER_VERSION = 0652c58d21c3d4ed4ab04028e58eb943d22fd36c
+OTTO_RUNNER_VERSION = master
 OTTO_RUNNER_SITE = git@github.com:NextThingCo/otto-runner.git
 OTTO_RUNNER_SITE_METHOD = git
 

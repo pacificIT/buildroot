@@ -18,9 +18,12 @@ ifeq ($(BR2_PACKAGE_OTTO_FASTCAMD),y)
 	include package/stak/platform/raspberrypi/otto-fastcamd/otto-fastcamd.mk
 endif
 
-
 ifeq ($(BR2_PACKAGE_LIBOTTOHARDWARE),y)
 	include package/stak/platform/raspberrypi/libOttoHardware/libOttoHardware.mk
+endif
+
+ifeq ($(BR2_PACKAGE_NANOSVG),y)
+	include package/stak/platform/raspberrypi/nanosvg/nanosvg.mk
 endif
 
 ifeq ($(BR2_PACKAGE_OTTOUPDATE),y)
