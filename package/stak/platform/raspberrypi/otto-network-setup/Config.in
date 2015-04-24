@@ -1,4 +1,4 @@
-config BR2_PACKAGE_OTTO_WIFI
+config BR2_PACKAGE_OTTO_NETWORK_SETUP
 	bool "otto-network-setup"
   help
     The webserver that allows to setup Otto's network
