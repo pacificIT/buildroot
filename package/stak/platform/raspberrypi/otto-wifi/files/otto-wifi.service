@@ -1,7 +1,6 @@
 [Unit]
 Description=OTTO wifi script
-After=syslog.target auditd.service
-Wants=connman.service
+After=syslog.target auditd.service network.service
 
 [Service]
 Type=forking
