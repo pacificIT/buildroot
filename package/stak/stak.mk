@@ -62,6 +62,10 @@ ifeq ($(BR2_PACKAGE_OTTO_MENU),y)
 	include package/stak/platform/raspberrypi/otto-menu/otto-menu.mk
 endif
 
+ifeq ($(BR2_PACKAGE_OTTO_NETWORK_SETUP),y)
+	include package/stak/platform/raspberrypi/otto-network-setup/otto-network-setup.mk
+endif
+
 ifeq ($(BR2_PACKAGE_OTTO_GIF_MODE),y)
 	include package/stak/platform/raspberrypi/otto-gif-mode/otto-gif-mode.mk
 endif
