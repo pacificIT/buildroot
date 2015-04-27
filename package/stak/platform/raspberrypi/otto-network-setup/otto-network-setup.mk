@@ -19,6 +19,9 @@ define OTTO_NETWORK_SETUP_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 644 $(@D)/setup.tpl \
 		$(TARGET_DIR)/usr/lib/otto-network-setup/setup.tpl
 
+	$(INSTALL) -D -m 644 $(@D)/images.tpl \
+		$(TARGET_DIR)/usr/lib/otto-network-setup/images.tpl
+
 	$(INSTALL) -D -m 644 $(@D)/jquery-1.11.2.min.js \
 		$(TARGET_DIR)/usr/lib/otto-network-setup/query-1.11.2.min.js
 
