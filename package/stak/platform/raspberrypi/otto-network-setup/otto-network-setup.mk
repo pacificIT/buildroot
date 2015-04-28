@@ -23,7 +23,7 @@ define OTTO_NETWORK_SETUP_INSTALL_INIT_SYSTEMD
 		$(TARGET_DIR)/usr/lib/otto-network-setup/images.tpl
 
 	$(INSTALL) -D -m 644 $(@D)/jquery-1.11.2.min.js \
-		$(TARGET_DIR)/usr/lib/otto-network-setup/query-1.11.2.min.js
+		$(TARGET_DIR)/usr/lib/otto-network-setup/jquery-1.11.2.min.js
 
 	$(INSTALL) -D -m 644 $(@D)/bootstrap/js/bootstrap.js \
 		$(TARGET_DIR)/usr/lib/otto-network-setup/bootstrap/js/bootstrap.min.js
