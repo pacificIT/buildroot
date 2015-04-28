@@ -1,6 +1,6 @@
 [Unit]
 Description=A lightweight DHCP and caching DNS server
-After=network.target
+After=network.target otto-wifi.service
 Documentation=man:dnsmasq(8)
 
 [Service]
