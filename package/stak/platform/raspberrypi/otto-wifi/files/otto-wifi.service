@@ -1,5 +1,9 @@
 [Unit]
 Description=OTTO wifi script
+Wants=sys-subsystem-net-devices-wlan1.device
+Wants=sys-subsystem-net-devices-eth0.device
+After=sys-subsystem-net-devices-wlan1.device
+After=sys-subsystem-net-devices-eth0.device
 After=syslog.target auditd.service network.service
 
 [Service]
