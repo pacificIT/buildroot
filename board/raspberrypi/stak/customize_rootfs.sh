@@ -20,17 +20,13 @@ sudo sed -i -e "s#^root:[^:]*:#root:$CRYPTEDPASS:#" ${TARGET_DIR}/etc/shadow
 sudo install -m 775 ${BUILD_ROOT}/board/raspberrypi/stak/root/etc/udev/rules.d/*   ${TARGET_DIR}/etc/udev/rules.d
 sudo install -m 775 ${BUILD_ROOT}/board/raspberrypi/stak/root/etc/avahi/services/*   ${TARGET_DIR}/etc/avahi/services
 
-sudo install -T -m 0644 ${BUILD_ROOT}/system/skeleton/etc/fstab ${TARGET_DIR}/etc/fstab
+sudo install -T -m 775 ${BUILD_ROOT}/system/skeleton/etc/fstab ${TARGET_DIR}/etc/fstab
+sudo install -d -m 775 ${TARGET_DIR}/var/lib/journal
 echo '/dev/mmcblk0p4 /mnt vfat defaults 0 0' | sudo tee --append ${TARGET_DIR}/etc/fstab
 
-
-PASSPHRASE=`cat ${BUILD_ROOT}/.stak-config`
-
-sed -e "s/Name = NTC-guests/Name = NTC/g" -i ${TARGET_DIR}/var/lib/connman/example.ntc.config
-sed -e "s/#Passphrase.*/Passphrase = ${PASSPHRASE}/g" -i ${TARGET_DIR}/var/lib/connman/example.ntc.config
 
 stamp=$(date +%s)
 D=$(date -d @${stamp} +"%Y-%m-%d %T %s")
 echo "**** TIMESTAMP= ${stamp}"
 echo "Welcome to stack update ${D}" >${TARGET_DIR}/etc/issue
-echo "${stamp}" >${TARGET_DIR}/stak/version
+echo "${stamp}" | sudo tee ${TARGET_DIR}/stak/version
