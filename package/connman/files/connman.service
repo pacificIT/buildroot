@@ -8,7 +8,7 @@ Before=remote-fs.target
 Type=dbus
 BusName=net.connman
 Restart=on-failure
-ExecStart=/usr/sbin/connmand -n
+ExecStart=/usr/sbin/connmand -n --nodnsproxy
 StandardOutput=null
 
 [Install]
