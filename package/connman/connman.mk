@@ -57,11 +57,6 @@ define CONNMAN_INSTALL_SETTINGS
 		$(TARGET_DIR)/var/lib/connman/settings
 endef
 
-define CONNMAN_INSTALL_CONFIGS
-	$(INSTALL) -m 0644 -D package/connman/files/*.config \
-		$(TARGET_DIR)/var/lib/connman/
-endef
-
-CONNMAN_POST_INSTALL_TARGET_HOOKS += CONNMAN_INSTALL_SETTINGS CONNMAN_INSTALL_CONFIGS
+CONNMAN_POST_INSTALL_TARGET_HOOKS += CONNMAN_INSTALL_SETTINGS
 
 $(eval $(autotools-package))

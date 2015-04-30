@@ -1,6 +1,7 @@
 config BR2_PACKAGE_OTTO_MENU
 	bool "otto-menu"
 	depends on BR2_arm
+  depends on BR2_PACKAGE_OTTDATE
 	help
 	  Hardware Interface library for the BCM2835 chip.
 
