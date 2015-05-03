@@ -61,9 +61,6 @@ define OTTO_NETWORK_SETUP_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 644 $(@D)/PhotoSwipe/photoswipe-ui-default.js \
 		$(TARGET_DIR)/usr/lib/otto-network-setup/PhotoSwipe/photoswipe-ui-default.js
 
-	$(INSTALL) -D -m 644 $(@D)/PhotoSwipe/default-skin \
-		$(TARGET_DIR)/usr/lib/otto-network-setup/PhotoSwipe/default-skin
-
 	$(INSTALL) -D -m 644 $(@D)/PhotoSwipe/default-skin/default-skin.css \
 		$(TARGET_DIR)/usr/lib/otto-network-setup/PhotoSwipe/default-skin/default-skin.css
 
