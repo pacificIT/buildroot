@@ -188,7 +188,8 @@ else
 
 	function fw_upload_full {
 		FW_FULL_NAME="stak-fw-full-${DATE}-r${BUILDNUMBER}.img"
-		FW_FULL_PATH="firmware/otto/full"
+		#FW_FULL_PATH="firmware/otto/full"
+		FW_FULL_PATH="firmware/otto/full-unstable"
 		FW_FULL_CHECKSUM=`md5sum ${IMG_PATH} | awk 'NR==1 {print $1}'`
 		FW_FULL_FILESIZE=`stat -c "%s" ${IMG_PATH}`
 
@@ -212,7 +213,8 @@ else
 
 	function fw_upload_update {
 		FW_UPDATE_NAME="stak-fw-update-${DATE}-r${BUILDNUMBER}.zip"
-		FW_UPDATE_PATH="firmware/otto/update"
+		#FW_UPDATE_PATH="firmware/otto/update"
+		FW_UPDATE_PATH="firmware/otto/update-unstable"
 		FW_UPDATE_CHECKSUM=`md5sum ${FW_PATH} | awk 'NR==1 {print $1}'`
 		FW_UPDATE_FILESIZE=`stat -c "%s" ${FW_PATH}`
 
