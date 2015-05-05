@@ -73,6 +73,9 @@ define OTTO_NETWORK_SETUP_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 644 $(@D)/assets/PhotoSwipe/default-skin/preloader.gif \
 		$(TARGET_DIR)/usr/lib/otto-network-setup/assets/PhotoSwipe/default-skin/preloader.gif
 
+	$(INSTALL) -D -m 644 $(@D)/assets/otto-logo-white.svg \
+		$(TARGET_DIR)/usr/lib/otto-network-setup/assets/otto-logo-white.svg
+
 	$(INSTALL) -D -m 644 $(@D)/otto-network-setup.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/otto-network-setup.service
 
