@@ -13,9 +13,9 @@ OTTO_SHUTDOWN_LICENSE_FILES = LICENCE
 define OTTO_SHUTDOWN_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 644 $(@D)/otto-shutdown.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/otto-shutdown.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
+	mkdir -p $(TARGET_DIR)/etc/systemd/system/final.target.wants
 	ln -fs ../../../../usr/lib/systemd/system/otto-shutdown.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/otto-shutdown.service
+		$(TARGET_DIR)/etc/systemd/system/final.target.wants/otto-shutdown.service
 endef
 
 $(eval $(generic-package))
