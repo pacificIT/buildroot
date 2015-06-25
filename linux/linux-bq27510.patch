@@ -21,7 +21,7 @@ index a78ac201828e..1eac363bbc8e 100644
  #define BQ27742_POWER_AVG		0x76
  
 +#define BQ27510_REG_SOC			0x20
-+#define BQ27510_REG_DCAP		0x2E /* Design capacity */
++#define BQ27510_REG_DCAP		0x3C /* Design capacity */
 +#define BQ27510_REG_CYCT		0x1E /* Cycle count total */
 +
  /* bq27425 register addresses are same as bq27x00 addresses minus 4 */
