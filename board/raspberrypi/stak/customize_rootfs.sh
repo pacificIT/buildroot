@@ -8,15 +8,23 @@ echo "$BUILD_ROOT"
 echo "Customizing root file system"
 CRYPTEDPASS=$(perl -e 'print crypt("doge1234","salt")')
 sudo sed -i -e "s#^root:[^:]*:#root:$CRYPTEDPASS:#" ${TARGET_DIR}/etc/shadow
-# echo "/dev/mmcblk0p4          /updates         vfat    defaults   0      0" | sudo tee --append ${TARGET_DIR}/etc/fstab
 
-# sed -e "s/auto \(eth.*\)/allow-hotplug \1/g" -i ${TARGET_DIR}/etc/network/interfaces
+if ! [ -f ${TARGET_DIR}/etc/ssh/ssh_host_key ]; then
+	ssh-keygen -t rsa1 -f ${TARGET_DIR}/etc/ssh/ssh_host_key -C '' -N ''
+fi
+if ! [ -f ${TARGET_DIR}/etc/ssh/ssh_host_rsa_key ]; then
+	ssh-keygen -t rsa -f ${TARGET_DIR}/etc/ssh/ssh_host_rsa_key -C '' -N ''
+fi
+if ! [ -f ${TARGET_DIR}/etc/ssh/ssh_host_dsa_key ]; then
+	ssh-keygen -t dsa -f ${TARGET_DIR}/etc/ssh/ssh_host_dsa_key -C '' -N ''
+fi
+if ! [ -f ${TARGET_DIR}/etc/ssh/ssh_host_ecdsa_key ]; then
+	ssh-keygen -t ecdsa -f ${TARGET_DIR}/etc/ssh/ssh_host_ecdsa_key -C '' -N ''
+fi
+if ! [ -f ${TARGET_DIR}/etc/ssh/ssh_host_ed25519_key ]; then
+	ssh-keygen -t ed25519 -f ${TARGET_DIR}/etc/ssh/ssh_host_ed25519_key -C '' -N ''
+fi
 
-#echo "allow-hotplug eth1" | sudo tee --append ${TARGET_DIR}/etc/network/interfaces
-#echo "iface eth1 inet dhcp" | sudo tee --append ${TARGET_DIR}/etc/network/interfaces
-# sudo install -m 775 ${BUILD_ROOT}/board/raspberrypi/stak/root/etc/init.d/S01launch-otto ${TARGET_DIR}/etc/init.d
-# sudo install -m 775 ${BUILD_ROOT}/board/raspberrypi/stak/root/etc/init.d/S03loadmodules   ${TARGET_DIR}/etc/init.d
-# sudo install -m 775 ${BUILD_ROOT}/board/raspberrypi/stak/root/etc/init.d/*   ${TARGET_DIR}/etc/init.d
 sudo install -m 775 ${BUILD_ROOT}/board/raspberrypi/stak/root/etc/udev/rules.d/*   ${TARGET_DIR}/etc/udev/rules.d
 sudo install -m 775 ${BUILD_ROOT}/board/raspberrypi/stak/root/etc/avahi/services/*   ${TARGET_DIR}/etc/avahi/services
 
@@ -30,3 +38,12 @@ D=$(date -d @${stamp} +"%Y-%m-%d %T %s")
 echo "**** TIMESTAMP= ${stamp}"
 echo "Welcome to stack update ${D}" >${TARGET_DIR}/etc/issue
 echo "${stamp}" | sudo tee ${TARGET_DIR}/stak/version
+
+source <(grep = ${PROJECT_ROOT}/.stak-config | sed 's/ *= */=/g' | sed 's/\./_/g')
+if [ $build_type == "release" ]; then
+	if [ -f ${TARGET_DIR}/stak/updateurl ]; then
+		rm ${TARGET_DIR}/stak/updateurl
+	fi
+else
+	echo "http://update.s-t-a-k.com/unstable" > ${TARGET_DIR}/stak/updateurl
+fi

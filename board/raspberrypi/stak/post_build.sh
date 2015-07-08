@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 IMAGE="output/images/rpi-sdimg.img"
 STAK_SUPPORT="board/raspberrypi/stak"
 FDISK=`which fdisk`
@@ -29,6 +28,8 @@ FWUP_CONFIG="${PROJECT_ROOT}/board/raspberrypi/stak/$FWUPCONF_NAME"
 
 FW_PATH="${PROJECT_ROOT}/output/images/raspberrypi.fw"
 IMG_PATH="${PROJECT_ROOT}/${IMAGE}"
+
+source <(grep = ${PROJECT_ROOT}/.stak-config | sed 's/ *= */=/g' | sed 's/\./_/g')
 
 if [ -z "$FWUP" ]; then
 	echo "fwup not configured for this image. Continuing without update support."
@@ -165,15 +166,6 @@ else
 	echo "Creating firmware file..."
 	FW_VERSION=${DATE} PROJECT_ROOT=${PROJECT_ROOT} ${FWUP} -c -f ${FWUP_CONFIG} -o ${FW_PATH}
 
-	# Build a raw image that can be directly written to
-	# an SDCard (remove an exiting file so that the file that
-	# is written is of minimum size. Otherwise, fwup just modifies
-	# the file. It will work, but may be larger than necessary.)
-	echo "Creating raw SDCard image file..."
-	rm -f ${IMG_PATH}
-
-	$FWUP -a -d ${IMG_PATH} -i ${FW_PATH} -t complete
-
 	echo "Uploading to S3..."
 
 	BUILDNUMBER=`git rev-list --count --first-parent HEAD`
@@ -187,9 +179,22 @@ else
 	HTTP_URL="http://${S3_BUCKET}.s3.amazonaws.com"
 
 	function fw_upload_full {
+		# Build a raw image that can be directly written to
+		# an SDCard (remove an exiting file so that the file that
+		# is written is of minimum size. Otherwise, fwup just modifies
+		# the file. It will work, but may be larger than necessary.)
+		echo "Creating raw SDCard image file..."
+		rm -f ${IMG_PATH}
+
+		$FWUP -a -d ${IMG_PATH} -i ${FW_PATH} -t complete
+
+
 		FW_FULL_NAME="stak-fw-full-${DATE}-r${BUILDNUMBER}.img"
-		#FW_FULL_PATH="firmware/otto/full"
-		FW_FULL_PATH="firmware/otto/full-unstable"
+		if [ $build_type == "release" ]; then
+			FW_FULL_PATH="firmware/otto/full"
+		else
+			FW_FULL_PATH="firmware/otto/full-unstable"
+		fi
 		FW_FULL_CHECKSUM=`md5sum ${IMG_PATH} | awk 'NR==1 {print $1}'`
 		FW_FULL_FILESIZE=`stat -c "%s" ${IMG_PATH}`
 
@@ -213,8 +218,11 @@ else
 
 	function fw_upload_update {
 		FW_UPDATE_NAME="stak-fw-update-${DATE}-r${BUILDNUMBER}.zip"
-		#FW_UPDATE_PATH="firmware/otto/update"
-		FW_UPDATE_PATH="firmware/otto/update-unstable"
+		if [ $build_type == "release" ]; then
+			FW_UPDATE_PATH="firmware/otto/update"
+		else
+			FW_UPDATE_PATH="firmware/otto/update-unstable"
+		fi
 		FW_UPDATE_CHECKSUM=`md5sum ${FW_PATH} | awk 'NR==1 {print $1}'`
 		FW_UPDATE_FILESIZE=`stat -c "%s" ${FW_PATH}`
 
@@ -235,6 +243,7 @@ else
 		echo "Uploaded firmware update to ${HTTP_URL}/${FW_UPDATE_PATH}/${FW_UPDATE_NAME}"
 		echo "Complete!"
 	}
+	echo "Preparing build of type '${build_type}'"
 	echo "Please select a firmware type to upload:"
 	select num in "None" "Full" "Update" "Both"; do
 		case $num in
