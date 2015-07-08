@@ -80,8 +80,8 @@ define OTTO_NETWORK_SETUP_INSTALL_INIT_SYSTEMD
 		$(TARGET_DIR)/usr/lib/systemd/system/otto-network-setup.service
 
 	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -fs ../../../../usr/lib/systemd/system/otto-network-setup.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/otto-network-setup.service
+	#ln -fs ../../../../usr/lib/systemd/system/otto-network-setup.service \
+	#	$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/otto-network-setup.service
 
 endef
 
