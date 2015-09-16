@@ -5,8 +5,7 @@
 #############################################################
 
 OTTO_NETWORK_SETUP_VERSION = master
-OTTO_NETWORK_SETUP_SITE = git@github.com:NextThingCo/otto-network-setup.git
-OTTO_NETWORK_SETUP_SITE_METHOD = git
+OTTO_NETWORK_SETUP_SITE = $(call github,NextThingCo,otto-network-setup,$(OTTO_NETWORK_SETUP_VERSION))
 OTTO_NETWORK_SETUP_INSTALL_TARGET = YES
 OTTO_NETWORK_SETUP_LICENSE = MIT
 OTTO_NETWORK_SETUP_LICENSE_FILES = LICENSE

@@ -4,9 +4,8 @@
 #
 #############################################################
 
-LIBOTTOHARDWARE_SITE = git@github.com:NextThingCo/libOttoHardware.git
 LIBOTTOHARDWARE_VERSION = master
-LIBOTTOHARDWARE_SITE_METHOD = git
+LIBOTTOHARDWARE_SITE = $(call github,NextThingCo,libOttoHardware,$(LIBOTTOHARDWARE_VERSION))
 
 LIBOTTOHARDWARE_LICENSE = GPLv2
 LIBOTTOHARDWARE_LICENSE_FILES = LICENCE

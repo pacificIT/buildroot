@@ -5,8 +5,7 @@
 #############################################################
 
 OTTO_GFX_VERSION = master
-OTTO_GFX_SITE = git@github.com:NextThingCo/otto-gfx.git
-OTTO_GFX_SITE_METHOD = git
+OTTO_GFX_SITE = $(call github,NextThingCo,otto-gfx,$(OTTO_GFX_VERSION))
 OTTO_GFX_LICENSE = GPLv2
 OTTO_GFX_LICENSE_FILES = LICENCE
 OTTO_GFX_CONF_OPTS = -DCMAKE_C_FLAGS="$(TARGET_CFLAGS) -march=armv6 -mfloat-abi=hard" -DVC_SDK=$(STAGING_DIR)/opt/vc

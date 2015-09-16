@@ -5,8 +5,7 @@
 #############################################################
 
 OTTO_RUNNER_VERSION = master
-OTTO_RUNNER_SITE = git@github.com:NextThingCo/otto-runner.git
-OTTO_RUNNER_SITE_METHOD = git
+OTTO_RUNNER_SITE = $(call github,NextThingCo,otto-runner,$(OTTO_RUNNER_VERSION))
 
 OTTO_RUNNER_LICENSE = GPLv2
 OTTO_RUNNER_LICENSE_FILES = LICENCE
