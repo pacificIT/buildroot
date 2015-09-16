@@ -4,7 +4,8 @@
 #
 ################################################################################
 
-PHP_VERSION = 5.5.23
+PHP_VERSION_MAJOR = 5.6
+PHP_VERSION = $(PHP_VERSION_MAJOR).12
 PHP_SITE = http://www.php.net/distributions
 PHP_SOURCE = php-$(PHP_VERSION).tar.xz
 PHP_INSTALL_STAGING = YES
@@ -20,7 +21,26 @@ PHP_CONF_OPTS = \
 	--without-pear \
 	--with-config-file-path=/etc \
 	--disable-rpath
-PHP_CONF_ENV = EXTRA_LIBS="$(PHP_EXTRA_LIBS)"
+PHP_CONF_ENV = \
+	ac_cv_func_strcasestr=yes \
+	EXTRA_LIBS="$(PHP_EXTRA_LIBS)"
+
+ifeq ($(BR2_STATIC_LIBS),y)
+PHP_CONF_ENV += LIBS="$(PHP_STATIC_LIBS)"
+endif
+
+ifeq ($(BR2_TARGET_LOCALTIME),)
+PHP_LOCALTIME = UTC
+else
+PHP_LOCALTIME = $(BR2_TARGET_LOCALTIME)
+endif
+
+# PHP can't be AUTORECONFed the standard way unfortunately
+PHP_DEPENDENCIES += host-autoconf host-automake host-libtool
+define PHP_BUILDCONF
+	cd $(@D) ; $(TARGET_MAKE_ENV) ./buildconf --force
+endef
+PHP_PRE_CONFIGURE_HOOKS += PHP_BUILDCONF
 
 ifeq ($(BR2_ENDIAN),"BIG")
 PHP_CONF_ENV += ac_cv_c_bigendian_php=yes
@@ -31,19 +51,25 @@ PHP_CONFIG_SCRIPTS = php-config
 
 PHP_CFLAGS = $(TARGET_CFLAGS)
 
+# The OPcache extension isn't cross-compile friendly
+# Throw some defines here to avoid patching heavily
+ifeq ($(BR2_PACKAGE_PHP_EXT_OPCACHE),y)
+PHP_CONF_OPTS += --enable-opcache
+PHP_CONF_ENV += ac_cv_func_mprotect=yes
+PHP_CFLAGS += \
+	-DHAVE_SHM_IPC \
+	-DHAVE_SHM_MMAP_ANON \
+	-DHAVE_SHM_MMAP_ZERO \
+	-DHAVE_SHM_MMAP_POSIX \
+	-DHAVE_SHM_MMAP_FILE
+endif
+
 # We need to force dl "detection"
 ifeq ($(BR2_STATIC_LIBS),)
 PHP_CONF_ENV += ac_cv_func_dlopen=yes ac_cv_lib_dl_dlopen=yes
 PHP_EXTRA_LIBS += -ldl
 else
 PHP_CONF_ENV += ac_cv_func_dlopen=no ac_cv_lib_dl_dlopen=no
-endif
-
-# Workaround for non-IPv6 uClibc toolchain
-ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC),y)
-ifneq ($(BR2_INET_IPV6),y)
-PHP_CFLAGS += -DHAVE_DEPRECATED_DNS_FUNCS
-endif
 endif
 
 PHP_CONF_OPTS += $(if $(BR2_PACKAGE_PHP_CLI),,--disable-cli)
@@ -88,6 +114,9 @@ endif
 ifeq ($(BR2_PACKAGE_PHP_EXT_OPENSSL),y)
 PHP_CONF_OPTS += --with-openssl=$(STAGING_DIR)/usr
 PHP_DEPENDENCIES += openssl
+# openssl needs zlib, but the configure script forgets to link against
+# it causing detection failures with static linking
+PHP_STATIC_LIBS += `$(PKG_CONFIG_HOST_BINARY) --libs openssl`
 endif
 
 ifeq ($(BR2_PACKAGE_PHP_EXT_LIBXML2),y)
@@ -158,6 +187,7 @@ endif
 ifeq ($(BR2_PACKAGE_PHP_EXT_SQLITE),y)
 PHP_CONF_OPTS += --with-sqlite3=$(STAGING_DIR)/usr
 PHP_DEPENDENCIES += sqlite
+PHP_STATIC_LIBS += `$(PKG_CONFIG_HOST_BINARY) --libs sqlite3`
 endif
 
 ### PDO
@@ -176,12 +206,34 @@ ifeq ($(BR2_PACKAGE_PHP_EXT_PDO_POSTGRESQL),y)
 PHP_CONF_OPTS += --with-pdo-pgsql=$(STAGING_DIR)/usr
 PHP_DEPENDENCIES += postgresql
 endif
+ifeq ($(BR2_PACKAGE_PHP_EXT_PDO_UNIXODBC),y)
+PHP_CONF_OPTS += --with-pdo-odbc=unixODBC,$(STAGING_DIR)/usr
+PHP_DEPENDENCIES += unixodbc
+ifeq ($(BR2_STATIC_LIBS)$(BR2_TOOLCHAIN_HAS_THREADS),yy)
+PHP_STATIC_LIBS += -lpthread
 endif
+endif
+endif
+
+define PHP_DISABLE_PCRE_JIT
+	$(SED) '/^#define SUPPORT_JIT/d' $(@D)/ext/pcre/pcrelib/config.h
+endef
 
 ### Use external PCRE if it's available
 ifeq ($(BR2_PACKAGE_PCRE),y)
 PHP_CONF_OPTS += --with-pcre-regex=$(STAGING_DIR)/usr
 PHP_DEPENDENCIES += pcre
+else
+# The bundled pcre library is not configurable through ./configure options,
+# and by default is configured to be thread-safe, so it wants pthreads. So
+# we must explicitly tell it when we don't have threads.
+ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),)
+PHP_CFLAGS += -DSLJIT_SINGLE_THREADED=1
+endif
+# check ext/pcre/pcrelib/sljit/sljitConfigInternal.h for supported archs
+ifeq ($(BR2_i386)$(BR2_x86_64)$(BR2_arm)$(BR2_armeb)$(BR2_aarch64)$(BR2_mips)$(BR2_mipsel)$(BR2_mips64)$(BR2_mips64el)$(BR2_powerpc)$(BR2_sparc),)
+PHP_POST_CONFIGURE_HOOKS += PHP_DISABLE_PCRE_JIT
+endif
 endif
 
 ifeq ($(BR2_PACKAGE_PHP_EXT_CURL),y)
@@ -232,6 +284,31 @@ PHP_CONF_OPTS += \
 PHP_DEPENDENCIES += jpeg libpng freetype
 endif
 
+ifeq ($(BR2_PACKAGE_PHP_FPM),y)
+define PHP_INSTALL_INIT_SYSV
+	$(INSTALL) -D -m 0755 $(@D)/sapi/fpm/init.d.php-fpm \
+		$(TARGET_DIR)/etc/init.d/S49php-fpm
+endef
+
+define PHP_INSTALL_INIT_SYSTEMD
+	$(INSTALL) -D -m 0644 $(@D)/sapi/fpm/php-fpm.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/php-fpm.service
+	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
+	ln -fs ../../../../usr/lib/systemd/system/php-fpm.service \
+		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/php-fpm.service
+endef
+
+define PHP_INSTALL_FPM_CONF
+	$(INSTALL) -D -m 0644 package/php/php-fpm.conf \
+		$(TARGET_DIR)/etc/php-fpm.conf
+	rm -f $(TARGET_DIR)/etc/php-fpm.conf.default
+	# remove unused sample status page /usr/php/php/fpm/status.html
+	rm -rf $(TARGET_DIR)/usr/php
+endef
+
+PHP_POST_INSTALL_TARGET_HOOKS += PHP_INSTALL_FPM_CONF
+endif
+
 define PHP_EXTENSIONS_FIXUP
 	$(SED) "/prefix/ s:/usr:$(STAGING_DIR)/usr:" \
 		$(STAGING_DIR)/usr/bin/phpize
@@ -242,10 +319,15 @@ endef
 PHP_POST_INSTALL_TARGET_HOOKS += PHP_EXTENSIONS_FIXUP
 
 define PHP_INSTALL_FIXUP
-	rm -rf $(TARGET_DIR)/usr/lib/php
+	rm -rf $(TARGET_DIR)/usr/lib/php/build
 	rm -f $(TARGET_DIR)/usr/bin/phpize
 	$(INSTALL) -D -m 0755 $(PHP_DIR)/php.ini-production \
 		$(TARGET_DIR)/etc/php.ini
+	$(SED) 's%;date.timezone =.*%date.timezone = $(PHP_LOCALTIME)%' \
+		$(TARGET_DIR)/etc/php.ini
+	$(if $(BR2_PACKAGE_PHP_EXT_OPCACHE),
+		$(SED) '/;extension=php_xsl.dll/azend_extension=opcache.so' \
+		$(TARGET_DIR)/etc/php.ini)
 endef
 
 PHP_POST_INSTALL_TARGET_HOOKS += PHP_INSTALL_FIXUP

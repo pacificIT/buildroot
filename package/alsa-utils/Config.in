@@ -39,6 +39,7 @@ comment "alsamixer needs a toolchain w/ wchar"
 
 config BR2_PACKAGE_ALSA_UTILS_AMIDI
 	select BR2_PACKAGE_ALSA_LIB_RAWMIDI
+	select BR2_PACKAGE_ALSA_LIB_SEQ
 	bool "amidi"
 
 config BR2_PACKAGE_ALSA_UTILS_AMIXER
@@ -56,6 +57,9 @@ config BR2_PACKAGE_ALSA_UTILS_IECSET
 config BR2_PACKAGE_ALSA_UTILS_ACONNECT
 	select BR2_PACKAGE_ALSA_LIB_SEQ
 	bool "aconnect"
+
+config BR2_PACKAGE_ALSA_UTILS_ALSAUCM
+	bool "alsaucm"
 
 config BR2_PACKAGE_ALSA_UTILS_APLAYMIDI
 	select BR2_PACKAGE_ALSA_LIB_SEQ

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-RTAI_VERSION = 3.8.1
+RTAI_VERSION = 4.0.1
 RTAI_SOURCE = rtai-$(RTAI_VERSION).tar.bz2
 RTAI_SITE = https://www.rtai.org/userfiles/downloads/RTAI
 RTAI_INSTALL_STAGING = YES
@@ -18,10 +18,18 @@ RTAI_POST_INSTALL_STAGING_HOOKS += RTAI_POST_PATCH_FIXUP
 
 RTAI_DEPENDENCIES = linux
 
+# We're building a kernel module without using the kernel-module infra,
+# so we need to tell we want module support in the kernel
+ifeq ($(BR2_PACKAGE_RTAI),y)
+LINUX_NEEDS_MODULES = y
+endif
+
 RTAI_CONF_OPTS = \
 	--includedir=/usr/include/rtai \
 	--with-linux-dir=$(LINUX_DIR) 	\
 	--disable-leds		      	\
+	--enable-usi			\
+	--enable-align-priority		\
 	--disable-rtailab		\
 	--with-module-dir=/lib/modules/$(LINUX_VERSION_PROBED)/rtai
 

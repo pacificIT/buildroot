@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-DNSMASQ_VERSION = 2.72
+DNSMASQ_VERSION = 2.75
 DNSMASQ_SOURCE = dnsmasq-$(DNSMASQ_VERSION).tar.xz
 DNSMASQ_SITE = http://thekelleys.org.uk/dnsmasq
 DNSMASQ_MAKE_ENV = $(TARGET_MAKE_ENV) CC="$(TARGET_CC)"
@@ -13,10 +13,6 @@ DNSMASQ_MAKE_OPTS += DESTDIR=$(TARGET_DIR) LDFLAGS="$(TARGET_LDFLAGS)"
 DNSMASQ_DEPENDENCIES = host-pkgconf
 DNSMASQ_LICENSE = Dual GPLv2/GPLv3
 DNSMASQ_LICENSE_FILES = COPYING COPYING-v3
-
-ifneq ($(BR2_INET_IPV6),y)
-DNSMASQ_COPTS += -DNO_IPV6
-endif
 
 ifneq ($(BR2_PACKAGE_DNSMASQ_DHCP),y)
 DNSMASQ_COPTS += -DNO_DHCP

@@ -9,8 +9,6 @@ DHCP_SITE = http://ftp.isc.org/isc/dhcp/$(DHCP_VERSION)
 DHCP_INSTALL_STAGING = YES
 DHCP_LICENSE = ISC
 DHCP_LICENSE_FILES = LICENSE
-# For 0001-fix-configure-debug.patch
-DHCP_AUTORECONF = YES
 DHCP_CONF_ENV = \
 	CPPFLAGS='-D_PATH_DHCPD_CONF=\"/etc/dhcp/dhcpd.conf\" \
 		-D_PATH_DHCLIENT_CONF=\"/etc/dhcp/dhclient.conf\"' \
@@ -29,10 +27,6 @@ DHCP_CONF_OPTS = \
 
 ifeq ($(BR2_PACKAGE_DHCP_SERVER_DELAYED_ACK),y)
 DHCP_CONF_OPTS += --enable-delayed-ack
-endif
-
-ifneq ($(BR2_INET_IPV6),y)
-DHCP_CONF_OPTS += --disable-dhcpv6
 endif
 
 ifeq ($(BR2_PACKAGE_DHCP_SERVER),y)

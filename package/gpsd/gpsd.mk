@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GPSD_VERSION = 3.11
+GPSD_VERSION = 3.15
 GPSD_SITE = http://download-mirror.savannah.gnu.org/releases/gpsd
 GPSD_LICENSE = BSD-3c
 GPSD_LICENSE_FILES = COPYING
@@ -27,11 +27,6 @@ ifeq ($(BR2_PACKAGE_NCURSES),y)
 GPSD_DEPENDENCIES += ncurses
 else
 GPSD_SCONS_OPTS += ncurses=no
-endif
-
-# Disable IPv6, if we don't support it
-ifneq ($(BR2_INET_IPV6),y)
-GPSD_SCONS_OPTS += ipv6=no
 endif
 
 # Build libgpsmm if we've got C++
