@@ -5,8 +5,7 @@
 #############################################################
 
 NANOSVG_VERSION = master
-NANOSVG_SITE = git@github.com:memononen/nanosvg.git
-NANOSVG_SITE_METHOD = git
+NANOSVG_SITE = $(call github,memononen,nanosvg,$(NANOSVG_VERSION))
 NANOSVG_LICENSE = GPLv2
 NANOSVG_LICENSE_FILES = LICENCE
 NANOSVG_INSTALL_STAGING = YES

@@ -4,10 +4,10 @@
 #
 ################################################################################
 
-POPPLER_VERSION = 0.24.5
+POPPLER_VERSION = 0.32.0
 POPPLER_SOURCE = poppler-$(POPPLER_VERSION).tar.xz
 POPPLER_SITE = http://poppler.freedesktop.org
-POPPLER_DEPENDENCIES = fontconfig
+POPPLER_DEPENDENCIES = fontconfig host-pkgconf
 POPPLER_LICENSE = GPLv2+
 POPPLER_LICENSE_FILES = COPYING
 POPPLER_INSTALL_STAGING = YES
@@ -22,6 +22,9 @@ endif
 
 ifeq ($(BR2_PACKAGE_TIFF),y)
 POPPLER_CONF_OPTS += --enable-libtiff
+# Help poppler to find libtiff in static linking scenarios
+POPPLER_CONF_ENV += \
+	LIBTIFF_LIBS="`$(PKG_CONFIG_HOST_BINARY) --libs libtiff-4`"
 POPPLER_DEPENDENCIES += tiff
 else
 POPPLER_CONF_OPTS += --disable-libtiff
@@ -67,6 +70,13 @@ POPPLER_DEPENDENCIES += qt
 POPPLER_CONF_OPTS += --enable-poppler-qt4
 else
 POPPLER_CONF_OPTS += --disable-poppler-qt4
+endif
+
+ifeq ($(BR2_PACKAGE_OPENJPEG),y)
+POPPLER_DEPENDENCIES += openjpeg
+POPPLER_CONF_OPTS += --enable-libopenjpeg=openjpeg1
+else
+POPPLER_CONF_OPTS += --enable-libopenjpeg=none
 endif
 
 $(eval $(autotools-package))

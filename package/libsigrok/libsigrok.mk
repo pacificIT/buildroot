@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBSIGROK_VERSION = 380ee96fdfe0895ca0aa0b158d5c332ef08f8b3c
+LIBSIGROK_VERSION = fe473123ba836445d477149f2e2c0ae372fc0c4c
 # No https access on upstream git
 LIBSIGROK_SITE = git://sigrok.org/libsigrok
 LIBSIGROK_LICENSE = GPLv3+
@@ -48,7 +48,12 @@ endif
 
 ifeq ($(BR2_PACKAGE_LIBSIGROKCXX),y)
 LIBSIGROK_CONF_OPTS += --enable-cxx
-LIBSIGROK_DEPENDENCIES += host-autoconf-archive glibmm
+LIBSIGROK_AUTORECONF_OPTS += -I $(HOST_DIR)/usr/share/autoconf-archive
+LIBSIGROK_DEPENDENCIES += \
+	host-autoconf-archive \
+	glibmm \
+	host-doxygen \
+	$(if $(BR2_PACKAGE_PYTHON3),host-python3,host-python)
 else
 LIBSIGROK_CONF_OPTS += --disable-cxx
 endif

@@ -172,6 +172,7 @@ else
 	# UPLOADNAME=stak-nightly-`date '+%Y-%m-%d-%s'`-r$BUILDNUMBER.img
 
 
+	build_type="debug"
 	S3_OPTIONS="put --acl-public --no-guess-mime-type --disable-multipart"
 	S3_BUCKET="stak-images"
 	S3_URL="s3://${S3_BUCKET}"
@@ -209,10 +210,10 @@ else
 		}
 		EOF
 
-		${S3CMD} ${S3_OPTIONS} ${IMG_PATH} ${S3_URL}/${FW_FULL_PATH}/${FW_FULL_NAME}
-		${S3CMD} ${S3_OPTIONS} output/images/latest-full ${S3_URL}/${FW_FULL_PATH}/latest
+		#${S3CMD} ${S3_OPTIONS} ${IMG_PATH} ${S3_URL}/${FW_FULL_PATH}/${FW_FULL_NAME}
+		#${S3CMD} ${S3_OPTIONS} output/images/latest-full ${S3_URL}/${FW_FULL_PATH}/latest
 
-		echo "Uploaded full firmware image to ${HTTP_URL}/${FW_FULL_PATH}/${FW_FULL_NAME}"
+		#echo "Uploaded full firmware image to ${HTTP_URL}/${FW_FULL_PATH}/${FW_FULL_NAME}"
 		echo "Complete!"
 	}
 
@@ -237,12 +238,17 @@ else
 			}
 		EOF
 
-		${S3CMD} ${S3_OPTIONS} ${FW_PATH} ${S3_URL}/${FW_UPDATE_PATH}/${FW_UPDATE_NAME}
-		${S3CMD} ${S3_OPTIONS} output/images/latest-update ${S3_URL}/${FW_UPDATE_PATH}/latest
+		#${S3CMD} ${S3_OPTIONS} ${FW_PATH} ${S3_URL}/${FW_UPDATE_PATH}/${FW_UPDATE_NAME}
+		#${S3CMD} ${S3_OPTIONS} output/images/latest-update ${S3_URL}/${FW_UPDATE_PATH}/latest
 
-		echo "Uploaded firmware update to ${HTTP_URL}/${FW_UPDATE_PATH}/${FW_UPDATE_NAME}"
+		#echo "Uploaded firmware update to ${HTTP_URL}/${FW_UPDATE_PATH}/${FW_UPDATE_NAME}"
 		echo "Complete!"
 	}
+
+	fw_upload_full
+	fw_upload_update
+
+	exit 0
 	echo "Preparing build of type '${build_type}'"
 	echo "Please select a firmware type to upload:"
 	select num in "None" "Full" "Update" "Both"; do

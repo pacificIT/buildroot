@@ -71,6 +71,9 @@ config BR2_PACKAGE_MTD_MTD_DEBUG
 	bool "mtd_debug"
 	default y
 
+config BR2_PACKAGE_MTD_MTDPART
+	bool "mtdpart"
+
 config BR2_PACKAGE_MTD_NANDDUMP
 	bool "nanddump"
 	default y
@@ -90,11 +93,7 @@ config BR2_PACKAGE_MTD_NFTL_FORMAT
 	bool "nftl_format"
 
 config BR2_PACKAGE_MTD_RECV_IMAGE
-	depends on BR2_INET_IPV6
 	bool "recv_image"
-
-comment "recv_image needs a toolchain w/ IPv6"
-	depends on !BR2_INET_IPV6
 
 config BR2_PACKAGE_MTD_RFDDUMP
 	bool "rfddump"

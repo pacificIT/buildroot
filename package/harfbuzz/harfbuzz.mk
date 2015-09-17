@@ -4,15 +4,26 @@
 #
 ################################################################################
 
-HARFBUZZ_VERSION = 0.9.40
+HARFBUZZ_VERSION = 1.0.2
 HARFBUZZ_SITE = http://www.freedesktop.org/software/harfbuzz/release
 HARFBUZZ_SOURCE = harfbuzz-$(HARFBUZZ_VERSION).tar.bz2
 HARFBUZZ_LICENSE = MIT, ISC (ucdn library)
 HARFBUZZ_LICENSE_FILES = COPYING src/hb-ucdn/COPYING
 HARFBUZZ_INSTALL_STAGING = YES
 HARFBUZZ_CONF_OPTS = --without-coretext --without-uniscribe --without-graphite2
-# beta libtool version
-HARFBUZZ_AUTORECONF = YES
+
+# freetype & glib2 support required by host-pango
+HOST_HARFBUZZ_DEPENDENCIES = \
+	host-freetype \
+	host-libglib2
+HOST_HARFBUZZ_CONF_OPTS = \
+	--without-corext \
+	--without-uniscribe \
+	--without-graphite2 \
+	--with-cairo=no \
+	--with-icu=no \
+	--with-freetype=yes \
+	--with-glib=yes
 
 ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
 # forgets to link test programs with -pthread breaking static link
@@ -48,3 +59,4 @@ HARFBUZZ_CONF_OPTS += --with-icu=no
 endif
 
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))
