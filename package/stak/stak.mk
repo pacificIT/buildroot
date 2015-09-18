@@ -70,6 +70,10 @@ ifeq ($(BR2_PACKAGE_OTTO_GIF_MODE),y)
 	include package/stak/platform/raspberrypi/otto-gif-mode/otto-gif-mode.mk
 endif
 
+ifeq ($(BR2_PACKAGE_OTTO_STILL_MODE),y)
+	include package/stak/platform/raspberrypi/otto-still-mode/otto-still-mode.mk
+endif
+
 ifeq ($(BR2_PACKAGE_DCFLDD),y)
 	include package/stak/platform/raspberrypi/dcfldd/dcfldd.mk
 endif
