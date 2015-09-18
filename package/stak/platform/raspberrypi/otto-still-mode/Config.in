@@ -1,0 +1,5 @@
+config BR2_PACKAGE_OTTO_STILL_MODE
+	bool "otto-still-mode"
+	depends on BR2_arm
+	help
+		New Still Mode

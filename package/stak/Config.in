@@ -34,6 +34,7 @@ menu "Stak"
 		source package/stak/platform/raspberrypi/otto-menu/Config.in
 		source package/stak/platform/raspberrypi/otto-network-setup/Config.in
 		source package/stak/platform/raspberrypi/otto-gif-mode/Config.in
+		source package/stak/platform/raspberrypi/otto-still-mode/Config.in
 		source package/stak/platform/raspberrypi/libOttoHardware/Config.in
 		source package/stak/platform/raspberrypi/nanosvg/Config.in
 		source package/stak/platform/raspberrypi/create_ap/Config.in
