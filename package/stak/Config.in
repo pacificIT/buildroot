@@ -5,7 +5,6 @@ menu "Stak"
 	bool "otto-full-stack"
 	depends on BR2_arm
 	select BR2_PACKAGE_CREATE_AP
-	select BR2_PACKAGE_OTTOUPDATE
 	select BR2_PACKAGE_PYTHON
 	select BR2_PACKAGE_PYTHON_BOTTLE
 	help
