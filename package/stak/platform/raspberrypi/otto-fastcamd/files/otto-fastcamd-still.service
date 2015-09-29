@@ -1,0 +1,8 @@
+[Unit]
+Description=OTTO Still Mode Fastcam
+After=syslog.target auditd.service
+
+[Service]
+ExecStart=/usr/bin/raspistill -s -n -ex auto -awb auto -mm matrix -w 2592 -h 1944 -e jpg -q 90 -o "/mnt/tmp/tmp_still.jpg"
+Restart=always
+StartLimitInterval=0

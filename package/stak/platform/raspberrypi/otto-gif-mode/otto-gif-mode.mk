@@ -18,6 +18,8 @@ define OTTO_GIF_MODE_GIT_SUBMODULE_FIXUP
 	git clone http://github.com/alecthomas/entityx.git $(@D)/deps/entityx
 	git clone http://github.com/NextThingCo/otto-runner.git $(@D)/deps/otto-runner
 	git clone http://github.com/NextThingCo/otto-utils.git $(@D)/deps/otto-utils
+	git clone http://github.com/NextThingCo/otto-gfx.git $(@D)/deps/otto-gfx
+	git clone http://github.com/cppformat/cppformat.git $(@D)/deps/cppformat
 endef
 
 define OTTO_GIF_MODE_INSTALL_TARGET_CMDS

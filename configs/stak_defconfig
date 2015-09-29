@@ -1,7 +1,8 @@
 BR2_arm=y
 BR2_arm1176jzf_s=y
 BR2_ARM_EABIHF=y
-BR2_STRIP_EXCLUDE_FILES="/usr/bin/otto-runner /stak/sdk/libotto_gif_mode.so /stak/sdk/libotto_menu.so"
+BR2_ENABLE_DEBUG=y
+BR2_STRIP_EXCLUDE_FILES="/usr/bin/otto-runner /stak/sdk/libotto_gif_mode.so /stak/sdk/libotto_still_mode.so /stak/sdk/libotto_menu.so"
 BR2_SHARED_STATIC_LIBS=y
 BR2_KERNEL_HEADERS_3_18=y
 BR2_TOOLCHAIN_BUILDROOT_GLIBC=y

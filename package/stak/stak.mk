@@ -82,8 +82,8 @@ ifeq ($(BR2_PACKAGE_BGFX),y)
 	include package/stak/platform/raspberrypi/bgfx/bgfx.mk
 endif
 
-ifeq ($(BR2_PACKAGE_RPI_USERLAND),y)
-	include package/stak/platform/raspberrypi/rpi-userland/rpi-userland.mk
+ifeq ($(BR2_PACKAGE_STAK_RPI_USERLAND),y)
+	include package/stak/platform/raspberrypi/stak-rpi-userland/stak-rpi-userland.mk
 endif
 
 ifeq ($(BR2_PACKAGE_OTTOSDK),y)

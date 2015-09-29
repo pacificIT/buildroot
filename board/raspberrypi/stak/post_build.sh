@@ -44,25 +44,25 @@ if [ -z "$FWUP" ]; then
 	mkdir -p ${BOOT_DIR} > /dev/null 2>&1
 	mkdir -p ${ROOT_DIR} > /dev/null 2>&1
 
-	sudo ${TAR} xvpsf output/images/rootfs.tar -C ${ROOT_DIR} > /dev/null > /dev/null 2>&1
+	${TAR} xvpsf output/images/rootfs.tar -C ${ROOT_DIR} > /dev/null > /dev/null 2>&1
 	
-	sudo ${CP} output/build/rpi-firmware-*/boot/bootcode.bin ${BOOT_DIR}/ > /dev/null > /dev/null 2>&1
-	sudo ${CP} output/build/rpi-firmware-*/boot/start.elf ${BOOT_DIR}/ > /dev/null > /dev/null 2>&1
-	sudo ${CP} output/build/rpi-firmware-*/boot/start_x.elf ${BOOT_DIR}/ > /dev/null > /dev/null 2>&1
-	sudo ${CP} output/build/rpi-firmware-*/boot/fixup.dat ${BOOT_DIR}/ > /dev/null > /dev/null 2>&1
+	${CP} output/build/rpi-firmware-*/boot/bootcode.bin ${BOOT_DIR}/ > /dev/null > /dev/null 2>&1
+	${CP} output/build/rpi-firmware-*/boot/start.elf ${BOOT_DIR}/ > /dev/null > /dev/null 2>&1
+	${CP} output/build/rpi-firmware-*/boot/start_x.elf ${BOOT_DIR}/ > /dev/null > /dev/null 2>&1
+	${CP} output/build/rpi-firmware-*/boot/fixup.dat ${BOOT_DIR}/ > /dev/null > /dev/null 2>&1
 	
-	sudo ${CP} ${STAK_SUPPORT}/cmdline.txt ${BOOT_DIR}/cmdline.txt > /dev/null > /dev/null 2>&1
-	sudo ${CP} ${STAK_SUPPORT}/config.txt ${BOOT_DIR}/config.txt > /dev/null > /dev/null 2>&1
-	sudo install -m 775 ${STAK_SUPPORT}/dt-blob.bin	${BOOT_DIR}/ > /dev/null > /dev/null 2>&1
+	${CP} ${STAK_SUPPORT}/cmdline.txt ${BOOT_DIR}/cmdline.txt > /dev/null > /dev/null 2>&1
+	${CP} ${STAK_SUPPORT}/config.txt ${BOOT_DIR}/config.txt > /dev/null > /dev/null 2>&1
+	install -m 775 ${STAK_SUPPORT}/dt-blob.bin	${BOOT_DIR}/ > /dev/null > /dev/null 2>&1
 	
-	sudo ${CP} output/images/zImage ${BOOT_DIR}/kernel.img > /dev/null > /dev/null 2>&1
+	${CP} output/images/zImage ${BOOT_DIR}/kernel.img > /dev/null > /dev/null 2>&1
 	
-	ROOTSIZE_MB="256" # "$(( ( `sudo du -h -s -S --total ${ROOT_DIR}/ | tail -1 | cut -f 1 | sed s'/.$//'`) + 10))"
+	ROOTSIZE_MB="256" # "$(( ( `du -h -s -S --total ${ROOT_DIR}/ | tail -1 | cut -f 1 | sed s'/.$//'`) + 10))"
 	
-	BOOTSIZE=`sudo du -h -s -S --total ${BOOT_DIR}/ | tail -1 | cut -f 1 | sed s'/.$//' | awk '{printf("%d\n",$1 + 0.5)}'`
+	BOOTSIZE=`du -h -s -S --total ${BOOT_DIR}/ | tail -1 | cut -f 1 | sed s'/.$//' | awk '{printf("%d\n",$1 + 0.5)}'`
 	BOOTSIZE_MB="$(( ${BOOTSIZE} + 4 ))"
 	
-	RECOVERY_BOOTSIZE="10" #`sudo du -h -s -S --total ${RECOVERY_BOOT_DIR}/ | tail -1 | cut -f 1 | sed s'/.$//' | awk '{printf("%d\n",$1 + 0.5)}'`
+	RECOVERY_BOOTSIZE="10" #`du -h -s -S --total ${RECOVERY_BOOT_DIR}/ | tail -1 | cut -f 1 | sed s'/.$//' | awk '{printf("%d\n",$1 + 0.5)}'`
 	
 	TOTAL_SIZE="$(( ${ROOTSIZE_MB} + ${BOOTSIZE_MB} + ${RECOVERY_BOOTSIZE} + 14))"
 
@@ -112,7 +112,7 @@ if [ -z "$FWUP" ]; then
 		w
 	END
 
-	KPARTX_OUTPUT=sudo ${KPARTX} -al ${IMAGE}
+	KPARTX_OUTPUT=${KPARTX} -al ${IMAGE}
 	BOOTLOOP=/dev/mapper/`echo "${KPARTX_OUTPUT}" | awk 'NR==1 {print $1}'`
 	ROOTLOOP=/dev/mapper/`echo "${KPARTX_OUTPUT}" | awk 'NR==3 {print $1}'`
 	sudo ${KPARTX} -a ${IMAGE}
@@ -124,9 +124,9 @@ if [ -z "$FWUP" ]; then
 		sudo rm -Rf sdimage
 	fi
 	
-	mkdir sdimage
-	mkdir -p sdimage/root
-	mkdir -p sdimage/boot
+	sudo mkdir sdimage
+	sudo mkdir -p sdimage/root
+	sudo mkdir -p sdimage/boot
 	
 	sudo ${MKFS_VFAT} -F16 -n BOOT -S 512 ${BOOTLOOP} > /dev/null 2>&1
 	sudo ${MKFS_EXT4} -T small ${ROOTLOOP} > /dev/null 2>&1
@@ -154,7 +154,7 @@ if [ -z "$FWUP" ]; then
 	sudo ${UMOUNT} sdimage/root
 	
 	sudo ${KPARTX} -d ${IMAGE} > /dev/null 2>&1
-	sudo rm -Rf sdimage/
+	rm -Rf sdimage/
 
 else
 	export SECS=$(cat <${TARGETDIR}/../target/stak/version )
@@ -210,10 +210,10 @@ else
 		}
 		EOF
 
-		#${S3CMD} ${S3_OPTIONS} ${IMG_PATH} ${S3_URL}/${FW_FULL_PATH}/${FW_FULL_NAME}
-		#${S3CMD} ${S3_OPTIONS} output/images/latest-full ${S3_URL}/${FW_FULL_PATH}/latest
+		# ${S3CMD} ${S3_OPTIONS} ${IMG_PATH} ${S3_URL}/${FW_FULL_PATH}/${FW_FULL_NAME}
+		# ${S3CMD} ${S3_OPTIONS} output/images/latest-full ${S3_URL}/${FW_FULL_PATH}/latest
 
-		#echo "Uploaded full firmware image to ${HTTP_URL}/${FW_FULL_PATH}/${FW_FULL_NAME}"
+		# echo "Uploaded full firmware image to ${HTTP_URL}/${FW_FULL_PATH}/${FW_FULL_NAME}"
 		echo "Complete!"
 	}
 
@@ -238,10 +238,10 @@ else
 			}
 		EOF
 
-		#${S3CMD} ${S3_OPTIONS} ${FW_PATH} ${S3_URL}/${FW_UPDATE_PATH}/${FW_UPDATE_NAME}
-		#${S3CMD} ${S3_OPTIONS} output/images/latest-update ${S3_URL}/${FW_UPDATE_PATH}/latest
+		# ${S3CMD} ${S3_OPTIONS} ${FW_PATH} ${S3_URL}/${FW_UPDATE_PATH}/${FW_UPDATE_NAME}
+		# ${S3CMD} ${S3_OPTIONS} output/images/latest-update ${S3_URL}/${FW_UPDATE_PATH}/latest
 
-		#echo "Uploaded firmware update to ${HTTP_URL}/${FW_UPDATE_PATH}/${FW_UPDATE_NAME}"
+		# echo "Uploaded firmware update to ${HTTP_URL}/${FW_UPDATE_PATH}/${FW_UPDATE_NAME}"
 		echo "Complete!"
 	}
 
